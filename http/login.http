@@ -1,0 +1,9 @@
+### Request
+
+POST http://localhost:8080/login/checkUserInfo
+X-AUTH-TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ6YXhzY2Q5NUBuYXZlci5jb20iLCJ1c2VyUGsiOiJ6YXhzY2Q5NUBuYXZlci5jb20iLCJuaWNrTmFtZSI6IiYjNTEwNjA7JiM1MDk3NjsmIzQ5NTY5OyIsImlhdCI6MTY4NTE4MzE4MywiZXhwIjoxNjg1MTg0OTgzfQ.-jQtNFUPS2dZoMY1MGbZxsxn0d81EbI6Kg64d6Hbl30
+### Headers
+
+
+
+### Body
