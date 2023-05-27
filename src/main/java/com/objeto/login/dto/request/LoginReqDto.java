@@ -1,6 +1,11 @@
 package com.objeto.login.dto.request;
 
 import com.objeto.login.dto.LoginDto;
+import com.objeto.security.PatternUtils;
+import com.objeto.security.encrypt.EncryptUtils;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,19 +13,24 @@ import lombok.Getter;
 @Builder
 public class LoginReqDto {
 
-    private String userId;
+    @NotEmpty
+    @Pattern(regexp = PatternUtils.emailPattern)
+    private String email;
 
-    private String userPassword;
+    @NotEmpty
+    @Pattern(regexp = PatternUtils.passwordPattern)
+    private String password;
 
-    public LoginReqDto(String userId, String userPassword) {
-        this.userId = userId;
-        this.userPassword = userPassword;
+    @Builder
+    public LoginReqDto(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
     public LoginDto convert() {
         return LoginDto.builder()
-                .userId(this.userId)
-                .userPassword(this.userPassword).build();
+                .email(this.email)
+                .userPassword(this.password).build();
     }
 
 }

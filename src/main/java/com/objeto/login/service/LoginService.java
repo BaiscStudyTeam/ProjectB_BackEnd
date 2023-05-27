@@ -8,8 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.util.UUID;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -24,12 +23,15 @@ public class LoginService {
         return userRepository.save(dto.toEntity());
     }
 
+    @Transactional
     public String validateLogin(LoginDto dto) {
-        User member = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
-        if (!member.getUserPassword().equals(dto.getUserPassword())) {
-            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
-        }
-        return jwtTokenProvider.createToken(member.getUserId(), member.getUserPassword());
+        // check emali duplication
+        User member = userRepository.findUserByEmail(dto.getEmail());
+        if (Objects.isNull(member))new IllegalArgumentException("unsigned email");
+        // check password is correct
+        if (!member.getPassword().equals(dto.getUserPassword())) throw new IllegalArgumentException("wrong password");
+        // return jwtToken for login User
+        return jwtTokenProvider.createToken(member.getEmail(), member.getNickname());
     }
 }
 

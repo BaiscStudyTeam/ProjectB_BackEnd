@@ -12,11 +12,17 @@ public class LoginDto {
 
     private String userId;
 
+    private String email;
+
+    private String nickName;
+
     private String userPassword;
 
     @Builder
-    public LoginDto(String userId, String userPassword, String regDt) {
+    public LoginDto(String userId, String email, String nickName, String userPassword) {
         this.userId = userId;
+        this.email = email;
+        this.nickName = nickName;
         this.userPassword = userPassword;
     }
 
@@ -32,7 +38,9 @@ public class LoginDto {
     public User toEntity() {
         return User.builder()
                 .userId(EncryptUtils.randomIdGenerator())
-                .userPassword(this.userPassword)
+                .email(this.email)
+                .nickname(this.nickName)
+                .password(this.userPassword)
                 .regDt(this.getRegDt())
                 .build();
     }

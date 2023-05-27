@@ -4,29 +4,50 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
 @Entity(name="user")
 @Getter
+@NoArgsConstructor
 public class User {
 
     @Id
     private String userId;
+    /**
+     * user's email. not allow duplication
+     */
+    private String email;
 
-    private String userPassword;
+    /**
+     * user's nickname. allow duplication
+     */
+    private String nickname;
 
+    /**
+     * user's password
+     */
+    private String password;
+
+    /**
+     * user Register date
+     */
     private java.sql.Timestamp regDt;
 
+    /**
+     * builder for immutable java Object
+     * @param email user's email
+     * @param password user's password
+     * @param regDt user's register date
+     */
     @Builder
-    public User(String userId, String userPassword, Timestamp regDt) {
+    public User(String userId, String email, String nickname, String password, Timestamp regDt) {
         this.userId = userId;
-        this.userPassword = userPassword;
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
         this.regDt = regDt;
     }
 
-    public User() {
-
-    }
 }
