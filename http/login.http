@@ -1,7 +1,11 @@
 ### Request
 
+### 1. /sign.html 에서 user 정보를 넣으세요
+### 2. /home.html 에서 해당 유저정보를 넣고 로그인하세요
+##  3. 로그인 후 돌아온 응답의 jwt 값을 가져와 X-AUTH-TOKEN 헤더의 값을 치환하세요.
+##  4. /login/checkUserInfo 로 접근하여 payload 및 최종 인증값을 체크하세요.
 POST http://localhost:8080/login/checkUserInfo
-X-AUTH-TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ6YXhzY2Q5NUBuYXZlci5jb20iLCJ1c2VyUGsiOiJ6YXhzY2Q5NUBuYXZlci5jb20iLCJuaWNrTmFtZSI6IiYjNTEwNjA7JiM1MDk3NjsmIzQ5NTY5OyIsImlhdCI6MTY4NTE4MzE4MywiZXhwIjoxNjg1MTg0OTgzfQ.-jQtNFUPS2dZoMY1MGbZxsxn0d81EbI6Kg64d6Hbl30
+X-AUTH-TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ6YXhzY2Q5NUBnbWFpbC5rciIsInVzZXJQayI6InpheHNjZDk1QGdtYWlsLmtyIiwibmlja05hbWUiOiJnbWFpbDIiLCJpYXQiOjE2ODUxODU5OTMsImV4cCI6MTY4NTE4Nzc5M30.bcG8iK__jtfddaKM8qTJx9n8N7Zu_CwyNBtKxkO0xtU
 ### Headers
 
 

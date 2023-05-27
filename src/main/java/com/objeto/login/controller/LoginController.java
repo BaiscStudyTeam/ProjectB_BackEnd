@@ -28,11 +28,12 @@ public class LoginController {
      */
     @GetMapping("/")
     public String login(LoginReqDto reqDto, HttpServletResponse response) throws IOException {
-        String token = loginService.validateLogin(reqDto.convert());
-        return "<form action='/login/checkUserInfo' method='post'><input type='hidden' name='token' value='" + token + "'>" +
-                "<input type='hidden' name='X-AUTH-TOKEN' value='" + token + "'>" +
-                "<input type='submit' value='Login'></form>";
-
+        try {
+            String token = loginService.validateLogin(reqDto.convert());
+            return "input this jwtToken in .http test file : " + token;
+        } catch(Exception e) {
+            return e.getMessage() + " : your login has failed";
+        }
     }
 
     /**
@@ -43,7 +44,7 @@ public class LoginController {
     @PostMapping("/insertUser")
     public ResponseEntity<String> insertUser(InsertUserReqDto reqDto) {
         loginService.insertLoginUser(reqDto.convert());
-        return ResponseEntity.ok("ok");
+        return ResponseEntity.ok("your account has been created. go to address \\home.html");
     }
 
 
