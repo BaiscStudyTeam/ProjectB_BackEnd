@@ -25,4 +25,8 @@ public class User {
         this.userPassword = userPassword;
         this.regDt = regDt;
     }
+
+    public User() {
+
+    }
 }

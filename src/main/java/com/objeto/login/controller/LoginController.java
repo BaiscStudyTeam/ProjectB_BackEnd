@@ -16,7 +16,7 @@ public class LoginController {
 
     private final LoginService loginService;
 
-    @PostMapping("/")
+    @GetMapping("/")
     public String login(LoginReqDto reqDto) {
         return loginService.validateLogin(reqDto.convert());
     }
