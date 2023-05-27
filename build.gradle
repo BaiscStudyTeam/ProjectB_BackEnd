@@ -33,4 +33,7 @@ dependencies {
     //DB Driver
     implementation 'mysql:mysql-connector-java:8.0.28'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
+
+    //JWT Security
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 }
