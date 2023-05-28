@@ -6,6 +6,7 @@ import com.objeto.login.entity.User;
 import com.objeto.login.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,11 @@ public class LoginService {
         User member = userRepository.findUserByEmail(dto.getEmail());
         if (Objects.isNull(member)) throw new BadCredentialsException("Jwt Authentication Failed : User not Exist");
         // check password is correct
-        if (!member.getPassword().equals(dto.getUserPassword())) throw new BadCredentialsException("Jwt Authentication Failed : Password doesn't match");
+        BCryptPasswordEncoder ec = new BCryptPasswordEncoder();
+
+        if(!ec.matches(dto.getUserPassword(), member.getPassword())) {
+            throw new BadCredentialsException("Jwt Authentication Failed : Password doesn't match");
+        }
         // return jwtToken for login User
         return jwtTokenProvider.createToken(member.getEmail(), member.getNickname());
     }

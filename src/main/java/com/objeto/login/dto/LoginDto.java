@@ -40,7 +40,7 @@ public class LoginDto {
                 .userId(EncryptUtils.randomIdGenerator())
                 .email(this.email)
                 .nickname(this.nickName)
-                .password(this.userPassword)
+                .password(EncryptUtils.executeBCryptPasswordEncoder(this.userPassword))
                 .regDt(this.getRegDt())
                 .build();
     }
