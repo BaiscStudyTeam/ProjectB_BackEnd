@@ -51,6 +51,6 @@ public class LoginController {
     @PostMapping("/checkUserInfo")
     public ResponseEntity<String> checkUserInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.ok("ok");
+        return ResponseEntity.ok("authenticated username : " + authentication.toString());
     }
 }
