@@ -5,6 +5,7 @@ import com.objeto.login.dto.LoginDto;
 import com.objeto.login.entity.User;
 import com.objeto.login.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,9 +28,9 @@ public class LoginService {
     public String validateLogin(LoginDto dto) {
         // check emali duplication
         User member = userRepository.findUserByEmail(dto.getEmail());
-        if (Objects.isNull(member))new IllegalArgumentException("unsigned email");
+        if (Objects.isNull(member)) throw new BadCredentialsException("Jwt Authentication Failed : User not Exist");
         // check password is correct
-        if (!member.getPassword().equals(dto.getUserPassword())) throw new IllegalArgumentException("wrong password");
+        if (!member.getPassword().equals(dto.getUserPassword())) throw new BadCredentialsException("Jwt Authentication Failed : Password doesn't match");
         // return jwtToken for login User
         return jwtTokenProvider.createToken(member.getEmail(), member.getNickname());
     }

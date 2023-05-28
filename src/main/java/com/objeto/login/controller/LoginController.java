@@ -28,12 +28,8 @@ public class LoginController {
      */
     @GetMapping("/")
     public String login(LoginReqDto reqDto, HttpServletResponse response) throws IOException {
-        try {
-            String token = loginService.validateLogin(reqDto.convert());
-            return "input this jwtToken in .http test file : " + token;
-        } catch(Exception e) {
-            return e.getMessage() + " : your login has failed";
-        }
+        String token = loginService.validateLogin(reqDto.convert());
+        return "input this jwtToken in .http test file : " + token;
     }
 
     /**
