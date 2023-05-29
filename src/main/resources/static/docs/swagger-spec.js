@@ -6,7 +6,7 @@ window.swaggerSpec={
     "version" : "0.0.1-SNAPSHOT"
   },
   "servers" : [ {
-    "url" : "http://localhost:8080"
+    "url" : "http://ec2-3-36-99-194.ap-northeast-2.compute.amazonaws.com:8080"
   } ],
   "tags" : [ ],
   "paths" : {
