@@ -133,18 +133,37 @@ public class LoginControllerTest {
     void sendVarificationEmail() throws Exception {
         //make Test Request
         SendVarificationEmailReqDto dto = SendVarificationEmailReqDto.builder().email("zaxscd95@gmail.com").build();
-        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/signIn/sendVarificationEmail")
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/signUp/sendVarificationEmail")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto))
                 )
                 .andExpect(status().isOk())
                 // Make API Document for result
-                .andDo(MockMvcRestDocumentationWrapper.document("removeUser",
+                .andDo(MockMvcRestDocumentationWrapper.document("sendVarificationEmail",
                         ResourceSnippetParameters.builder()
-                                .tag("signIn")
+                                .tag("signUp")
                                 .summary("send Varification Email")
                                 .description("send Varification Email")
                                 .requestSchema(Schema.schema("SendVarificationEmailReqDto.email")),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ));
+
+    }
+
+
+    @Test
+    @DisplayName("GET:api/signIn/checkEmailCode/{code}")
+    void redisTest() throws Exception {
+        //make Test Request
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/signUp/checkEmailCode/" + "9b08af2d-44c5-4bf3-8072-b4b771"))
+                .andExpect(status().isOk())
+                // Make API Document for result
+                .andDo(MockMvcRestDocumentationWrapper.document("checkEmailCode",
+                        ResourceSnippetParameters.builder()
+                                .tag("signUp")
+                                .summary("send Varification redis")
+                                .description("check Varification code in redis. usually it add to Mail Content URL Path Variable."),
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())
                 ));
