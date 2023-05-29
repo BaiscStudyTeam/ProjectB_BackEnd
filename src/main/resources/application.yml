@@ -4,7 +4,7 @@ server :
 spring :
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:mysql://dev.c3andky0bnjd.ap-northeast-2.rds.amazonaws.com:3306/dev_schema?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:p6spy:mysql://database.c3andky0bnjd.ap-northeast-2.rds.amazonaws.com:3306/dev_schema?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
     username: admin
     password: admin1234!
   jpa:
