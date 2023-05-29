@@ -22,11 +22,11 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-removeUser486549215"
+                  "$ref" : "#/components/schemas/api-login-findUser486549215"
                 },
                 "examples" : {
                   "findUser" : {
-                    "value" : "input this jwtToken in .http test file : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ6YXhzY2Q5NUBuYXZlci5jb20iLCJ1c2VyUGsiOiJ6YXhzY2Q5NUBuYXZlci5jb20iLCJuaWNrTmFtZSI6Im1hbWFtYW0iLCJpYXQiOjE2ODUzMzI5ODAsImV4cCI6MTY4NTMzNDc4MH0.sEdngqPX96Jwz7YsCpP9NORaDqY4N9dbrU6xpS9C2fY"
+                    "value" : "input this jwtToken in .http test file : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ6YXhzY2Q5NUBuYXZlci5jb20iLCJ1c2VyUGsiOiJ6YXhzY2Q5NUBuYXZlci5jb20iLCJuaWNrTmFtZSI6ImRsZGJ0aGQxIiwiaWF0IjoxNjg1MzkwNjg4LCJleHAiOjE2ODUzOTI0ODh9.2YYnHs-S0VW7b-lKaqPyLNnDqufAzQ0DYtqJFztxiuk"
                   }
                 }
               }
@@ -40,7 +40,7 @@ window.swaggerSpec={
         "tags" : [ "login" ],
         "summary" : "remove User Test",
         "description" : "remove user",
-        "operationId" : "test-get",
+        "operationId" : "removeUser",
         "requestBody" : {
           "content" : {
             "application/json;charset=UTF-8" : {
@@ -48,7 +48,7 @@ window.swaggerSpec={
                 "$ref" : "#/components/schemas/RemoveUserReqDto.email"
               },
               "examples" : {
-                "test-get" : {
+                "removeUser" : {
                   "value" : "{\r\n  \"email\" : \"zaxscd95@naver.com\"\r\n}"
                 }
               }
@@ -61,10 +61,10 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-removeUser486549215"
+                  "$ref" : "#/components/schemas/api-login-findUser486549215"
                 },
                 "examples" : {
-                  "test-get" : {
+                  "removeUser" : {
                     "value" : "your account info removed."
                   }
                 }
@@ -88,7 +88,7 @@ window.swaggerSpec={
               },
               "examples" : {
                 "saveUser" : {
-                  "value" : "{\r\n  \"email\" : \"abcd0.0867364442590548@naver.com\",\r\n  \"nickName\" : \"abcd\",\r\n  \"password\" : \"abcd1234!\",\r\n  \"userUUID\" : \"56b840d6-8da5-4eea-a783-4ef3e6\"\r\n}"
+                  "value" : "{\r\n  \"email\" : \"abcd0.44732435069361165@naver.com\",\r\n  \"nickName\" : \"abcd\",\r\n  \"password\" : \"abcd1234!\",\r\n  \"userUUID\" : \"8b6114b8-4553-4d47-9b9c-35a4ca\"\r\n}"
                 }
               }
             }
@@ -100,7 +100,7 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-removeUser486549215"
+                  "$ref" : "#/components/schemas/api-login-findUser486549215"
                 },
                 "examples" : {
                   "saveUser" : {
@@ -139,11 +139,75 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-removeUser486549215"
+                  "$ref" : "#/components/schemas/api-login-findUser486549215"
                 },
                 "examples" : {
                   "updateUser" : {
                     "value" : "your account info updated."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/signUp/sendVarificationEmail" : {
+      "post" : {
+        "tags" : [ "signUp" ],
+        "summary" : "send Varification Email",
+        "description" : "send Varification Email",
+        "operationId" : "sendVarificationEmail",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SendVarificationEmailReqDto.email"
+              },
+              "examples" : {
+                "sendVarificationEmail" : {
+                  "value" : "{\r\n  \"email\" : \"zaxscd95@gmail.com\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "text/plain;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-login-findUser486549215"
+                },
+                "examples" : {
+                  "sendVarificationEmail" : {
+                    "value" : "your account has been created. go to address \\home.html"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/signUp/checkEmailCode/9b08af2d-44c5-4bf3-8072-b4b771" : {
+      "get" : {
+        "tags" : [ "signUp" ],
+        "summary" : "send Varification redis",
+        "description" : "check Varification code in redis. usually it add to Mail Content URL Path Variable.",
+        "operationId" : "checkEmailCode",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "text/plain;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-login-findUser486549215"
+                },
+                "examples" : {
+                  "checkEmailCode" : {
+                    "value" : "your email code is expired or not exist. please send Varification Email Again"
                   }
                 }
               }
@@ -167,7 +231,11 @@ window.swaggerSpec={
         "title" : "RemoveUserReqDto.email",
         "type" : "object"
       },
-      "api-login-removeUser486549215" : {
+      "SendVarificationEmailReqDto.email" : {
+        "title" : "SendVarificationEmailReqDto.email",
+        "type" : "object"
+      },
+      "api-login-findUser486549215" : {
         "type" : "object"
       }
     }
