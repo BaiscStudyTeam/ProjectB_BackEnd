@@ -21,7 +21,7 @@ swaggerSources {
 }
 
 openapi3 {
-    setServer("http://localhost:8080")
+    setServer("http://3.36.99.194:8080")
     title = "restdocs-swagger API Documentation"
     description = "Spring REST Docs with SwaggerUI."
     version = "0.0.1"
@@ -56,13 +56,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.1.0'
     implementation "org.springframework.boot:spring-boot-starter-security"
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    //  - 테스트 플러그인
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-restassured' //OpenApi3 Document Plugin
-    testImplementation 'io.rest-assured:rest-assured' //OpenApi3 Document Plugin
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.17.1'
-    swaggerUI 'org.webjars:swagger-ui:4.11.1'
+
     //DB Driver
     implementation 'mysql:mysql-connector-java:8.0.28'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
@@ -71,50 +65,64 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'javax.xml.bind:jaxb-api:2.1'
 
+    //Mail Implementation
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    runtimeOnly "com.sun.activation:jakarta.activation:2.0.1"
 
+    //  - 테스트 플러그인
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-restassured' //OpenApi3 Document Plugin
+    testImplementation 'io.rest-assured:rest-assured'                             //OpenApi3 Document Plugin
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'     //OpenApi3 Document Plugin
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.17.1'              //OpenApi3 Document Plugin
+    swaggerUI 'org.webjars:swagger-ui:4.11.1'                                     //OpenApi3 Document Plugin
 }
 
+//test {
+//    outputs.dir snippetsDir
+//    exclude 'com.example.objeto' // skip Test
+//    useJUnitPlatform()
+//}
+//
+//// define Standard OpenApi Spec & ascciDoc generate Directory
+//openapi3 {
+//    server = 'http://ec2-3-36-99-194.ap-northeast-2.compute.amazonaws.com:8080'
+//    title = 'RestDocs to Swagger 변환 테스트'
+//    description = 'Restdocs로 API 문서 작성 후 이를 Swagger로 변환하는 페이지'
+//    version = '0.0.1-SNAPSHOT'
+//    format = 'yaml'
+//}
+//asciidoctor {
+//    inputs.dir snippetsDir
+//    dependsOn test
+//}
+//
+//tasks.register('copySwaggerFileWhenBuild', Copy) {
+//    dependsOn 'bootJar'
+//    from("${project.buildDir}/resources/main/static/docs")
+//    into("${project.buildDir}/resources/main/static/docs")
+//}
+//tasks.register('copySwaggerUI', Copy) {
+//    dependsOn 'generateSwaggerUISample'
+//
+//    def generateSwaggerUISampleTask = tasks.named('generateSwaggerUISample', GenerateSwaggerUI).get()
+//
+//    from("${generateSwaggerUISampleTask.outputDir}")
+//    into("${project.buildDir}/resources/main/static/docs")
+//}
+//tasks.withType(BootJar) {
+//    dependsOn 'copySwaggerUI'
+//}
+//tasks.withType(GenerateSwaggerUI) {
+//    dependsOn 'openapi3'
+//}
+//swaggerSources {
+//    sample {
+//        setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
+//    }
+//}
 
-openapi3 {
-    server = 'http://localhost:8080'
-    title = 'RestDocs to Swagger 변환 테스트'
-    description = 'Restdocs로 API 문서 작성 후 이를 Swagger로 변환하는 페이지'
-    version = '0.0.1-SNAPSHOT'
-    format = 'yaml'
-}
-
-tasks.withType(GenerateSwaggerUI) {
-    dependsOn 'openapi3'
-}
-
-tasks.register('copySwaggerUI', Copy) {
-    dependsOn 'generateSwaggerUISample'
-
-    def generateSwaggerUISampleTask = tasks.named('generateSwaggerUISample', GenerateSwaggerUI).get()
-
-    from("${generateSwaggerUISampleTask.outputDir}")
-    into("${project.buildDir}/resources/main/static/docs")
-}
-
-tasks.withType(BootJar) {
-    dependsOn 'copySwaggerUI'
-}
 
 
-swaggerSources {
-    sample {
-        setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
-    }
-}
 
 
-test {
-    outputs.dir snippetsDir
-    useJUnitPlatform()
-}
-
-
-asciidoctor {
-    inputs.dir snippetsDir
-    dependsOn test
-}
