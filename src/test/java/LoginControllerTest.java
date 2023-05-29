@@ -6,6 +6,7 @@ import com.objeto.SpringBootApplicationMain;
 import com.objeto.login.dto.request.InsertUserReqDto;
 import com.objeto.login.dto.request.RemoveUserReqDto;
 import com.objeto.login.dto.request.UpdateUserReqDto;
+import com.objeto.signup.dto.request.SendVarificationEmailReqDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,7 +115,7 @@ public class LoginControllerTest {
                 )
                 .andExpect(status().isOk())
                 // Make API Document for result
-                .andDo(MockMvcRestDocumentationWrapper.document("test-get",
+                .andDo(MockMvcRestDocumentationWrapper.document("removeUser",
                         ResourceSnippetParameters.builder()
                                 .tag("login")
                                 .summary("remove User Test")
@@ -126,4 +127,27 @@ public class LoginControllerTest {
 
     }
 
+
+    @Test
+    @DisplayName("POST:api/signIn/sendVarificationEmail")
+    void sendVarificationEmail() throws Exception {
+        //make Test Request
+        SendVarificationEmailReqDto dto = SendVarificationEmailReqDto.builder().email("zaxscd95@gmail.com").build();
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/signIn/sendVarificationEmail")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(dto))
+                )
+                .andExpect(status().isOk())
+                // Make API Document for result
+                .andDo(MockMvcRestDocumentationWrapper.document("removeUser",
+                        ResourceSnippetParameters.builder()
+                                .tag("signIn")
+                                .summary("send Varification Email")
+                                .description("send Varification Email")
+                                .requestSchema(Schema.schema("SendVarificationEmailReqDto.email")),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ));
+
+    }
 }
