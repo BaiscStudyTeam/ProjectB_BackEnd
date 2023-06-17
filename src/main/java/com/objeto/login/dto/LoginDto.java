@@ -44,14 +44,4 @@ public class LoginDto {
                 .regDt(this.getRegDt())
                 .build();
     }
-
-    public User toSaveEntity() {
-        return User.builder()
-                .userId(this.userId)
-                .email(this.email)
-                .nickname(this.nickName)
-                .password(EncryptUtils.executeBCryptPasswordEncoder(this.userPassword))
-                .regDt(this.getRegDt())
-                .build();
-    }
 }

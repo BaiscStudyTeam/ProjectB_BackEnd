@@ -2,15 +2,13 @@ package com.objeto.login.controller;
 
 import com.objeto.login.dto.request.RemoveUserReqDto;
 import com.objeto.login.dto.request.UpdateUserReqDto;
-import com.objeto.login.dto.response.FindDuplicateNickNameResDto;
+import com.objeto.login.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import com.objeto.login.dto.request.InsertUserReqDto;
-import com.objeto.login.dto.request.LoginReqDto;
+import com.objeto.login.dto.request.FindUserReqDto;
 import com.objeto.login.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -45,7 +43,7 @@ public class LoginController {
 
     @PutMapping("/updateUser")
     public ResponseEntity<String> updateUser(@RequestBody UpdateUserReqDto reqDto) {
-        loginService.updateUser(reqDto.convert());
+        loginService.updateUser(reqDto);
         return ResponseEntity.ok("your account info updated.");
     }
 
@@ -55,13 +53,4 @@ public class LoginController {
         return ResponseEntity.ok("your account info removed.");
     }
 
-    /**
-     * check login user's jwt token payload info
-     * @return login user's email and nickname
-     */
-    @PostMapping("/checkUserInfo")
-    public ResponseEntity<String> checkUserInfo() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.ok("authenticated username : " + authentication.toString());
-    }
 }
