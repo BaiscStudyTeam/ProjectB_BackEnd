@@ -11,11 +11,25 @@ window.swaggerSpec={
   "tags" : [ ],
   "paths" : {
     "/api/login/findUser" : {
-      "get" : {
+      "post" : {
         "tags" : [ "login" ],
         "summary" : "user Login function",
         "description" : "when user login, give user JwtToken sample to test",
         "operationId" : "findUser",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LoginReqDto.password"
+              },
+              "examples" : {
+                "findUser" : {
+                  "value" : "{\r\n  \"email\" : \"zaxscd95@naver.com\",\r\n  \"password\" : \"5555\"\r\n}"
+                }
+              }
+            }
+          }
+        },
         "responses" : {
           "200" : {
             "description" : "200",
@@ -26,7 +40,7 @@ window.swaggerSpec={
                 },
                 "examples" : {
                   "findUser" : {
-                    "value" : "input this jwtToken in .http test file : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ6YXhzY2Q5NUBuYXZlci5jb20iLCJ1c2VyUGsiOiJ6YXhzY2Q5NUBuYXZlci5jb20iLCJuaWNrTmFtZSI6ImRsZGJ0aGQxIiwiaWF0IjoxNjg1MzkwNjg4LCJleHAiOjE2ODUzOTI0ODh9.2YYnHs-S0VW7b-lKaqPyLNnDqufAzQ0DYtqJFztxiuk"
+                    "value" : "input this jwtToken in .http test file : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJ1c2VySWQiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJpYXQiOjE2ODcwMDQ2MDMsImV4cCI6MTY4NzAwNjQwM30.wgsEUoud120yFBxwRU2mfrxOF4UnYEyXsR_36sz52Mg"
                   }
                 }
               }
@@ -88,7 +102,7 @@ window.swaggerSpec={
               },
               "examples" : {
                 "saveUser" : {
-                  "value" : "{\r\n  \"email\" : \"abcd0.44732435069361165@naver.com\",\r\n  \"nickName\" : \"abcd\",\r\n  \"password\" : \"abcd1234!\",\r\n  \"userUUID\" : \"8b6114b8-4553-4d47-9b9c-35a4ca\"\r\n}"
+                  "value" : "{\r\n  \"email\" : \"abcd0.7561423370680969@naver.com\",\r\n  \"nickName\" : \"abcd\",\r\n  \"password\" : \"abcd1234!\",\r\n  \"emailAuthCode\" : null,\r\n  \"userUUID\" : \"44ea8609-b202-4af8-b06d-36f135\"\r\n}"
                 }
               }
             }
@@ -127,7 +141,7 @@ window.swaggerSpec={
               },
               "examples" : {
                 "updateUser" : {
-                  "value" : "{\r\n  \"email\" : \"zaxscd95@naver.com\"\r\n}"
+                  "value" : "{\r\n  \"nickname\" : \"7777\",\r\n  \"password\" : \"5555\"\r\n}"
                 }
               }
             }
@@ -144,6 +158,56 @@ window.swaggerSpec={
                 "examples" : {
                   "updateUser" : {
                     "value" : "your account info updated."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/signUp/findDuplicateEmail" : {
+      "get" : {
+        "tags" : [ "signUp" ],
+        "summary" : "find Duplicated Email",
+        "description" : "find Duplicated Email",
+        "operationId" : "findDuplicateEmail",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-login-findUser486549215"
+                },
+                "examples" : {
+                  "findDuplicateEmail" : {
+                    "value" : "1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/signUp/findDuplicateNickName" : {
+      "get" : {
+        "tags" : [ "signUp" ],
+        "summary" : "find Duplicated NickName",
+        "description" : "find Duplicated NickName",
+        "operationId" : "findDuplicateNickName",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-login-findUser486549215"
+                },
+                "examples" : {
+                  "findDuplicateNickName" : {
+                    "value" : "{\r\n  \"nickname\" : \"abcd3258471\"\r\n}"
                   }
                 }
               }
@@ -233,6 +297,10 @@ window.swaggerSpec={
       },
       "SendVarificationEmailReqDto.email" : {
         "title" : "SendVarificationEmailReqDto.email",
+        "type" : "object"
+      },
+      "LoginReqDto.password" : {
+        "title" : "LoginReqDto.password",
         "type" : "object"
       },
       "api-login-findUser486549215" : {

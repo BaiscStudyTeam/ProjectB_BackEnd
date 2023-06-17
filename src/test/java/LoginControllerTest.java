@@ -3,6 +3,7 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.Schema;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.objeto.SpringBootApplicationMain;
+import com.objeto.login.dto.request.FindUserReqDto;
 import com.objeto.login.dto.request.InsertUserReqDto;
 import com.objeto.login.dto.request.RemoveUserReqDto;
 import com.objeto.login.dto.request.UpdateUserReqDto;
@@ -15,9 +16,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = SpringBootApplicationMain.class)
@@ -31,12 +36,16 @@ public class LoginControllerTest {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    @DisplayName("GET:api/login/findUser")
+    @DisplayName("POST:api/login/findUser")
     void loginTest() throws Exception {
         //make Test Request
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/login/findUser")
-                        .param("email", "zaxscd95@naver.com")
-                        .param("password", "dldbthd1234")
+        FindUserReqDto dto = FindUserReqDto.builder()
+                .email("zaxscd95@naver.com")
+                .password("5555")
+                .build();
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.post("/api/login/findUser")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(dto))
                 )
                 .andExpect(status().isOk())
                 // Make API Document for result
@@ -50,6 +59,12 @@ public class LoginControllerTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())
         ));
+
+        System.out.println("====================================================");
+        System.out.println("====================================================");
+        System.out.println(actions.andReturn().getResponse().getContentAsString());
+        System.out.println("====================================================");
+        System.out.println("====================================================");
 
     }
 
@@ -85,8 +100,10 @@ public class LoginControllerTest {
     @DisplayName("PUT:api/login/updateUser")
     void modifyUserTest() throws Exception {
         //make Test Request
-        UpdateUserReqDto dto = UpdateUserReqDto.builder().userId("").build();
+        UpdateUserReqDto dto = UpdateUserReqDto.builder().nickname("7777").password("5555").build();
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/login/updateUser")
+                        // Need Jwt Token that findUser method provide
+                        .header("X-AUTH-TOKEN", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJ1c2VySWQiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJpYXQiOjE2ODY5OTgwNDMsImV4cCI6MTcwNDk5ODA0M30.FQ7DcO7IkbB6MthEGMzL8wRpQ4cRTXvDyWlV7FisH_c")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto))
                 )
@@ -174,13 +191,14 @@ public class LoginControllerTest {
     @DisplayName("GET:api/signUp/findDuplicateEmail")
     void findDuplicateEmail() throws Exception {
         //make Test Request
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/signUp/findDuplicateEmail")
-                        .param("email","zaxscd95@naver.com")
-                )
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/signUp/findDuplicateEmail?email=" + "zaxscd95@naver.com"))
                 .andExpect(status().isOk())
                 // Make API Document for result
                 .andDo(MockMvcRestDocumentationWrapper.document("findDuplicateEmail",
                         ResourceSnippetParameters.builder()
+                                .queryParameters(
+                                        parameterWithName("email").description("email")
+                                )
                                 .tag("signUp")
                                 .summary("find Duplicated Email")
                                 .description("find Duplicated Email"),
@@ -194,9 +212,7 @@ public class LoginControllerTest {
     @DisplayName("GET:api/signUp/findDuplicateNickName")
     void findDuplicateNickName() throws Exception {
         //make Test Request
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/signUp/findDuplicateNickName")
-                        .param("nickname","abcd")
-                )
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/signUp/findDuplicateNickName?nickname=" + "abcd"))
                 .andExpect(status().isOk())
                 // Make API Document for result
                 .andDo(MockMvcRestDocumentationWrapper.document("findDuplicateNickName",
