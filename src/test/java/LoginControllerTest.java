@@ -169,4 +169,43 @@ public class LoginControllerTest {
                 ));
 
     }
+
+    @Test
+    @DisplayName("GET:api/signUp/findDuplicateEmail")
+    void findDuplicateEmail() throws Exception {
+        //make Test Request
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/signUp/findDuplicateEmail")
+                        .param("email","zaxscd95@naver.com")
+                )
+                .andExpect(status().isOk())
+                // Make API Document for result
+                .andDo(MockMvcRestDocumentationWrapper.document("findDuplicateEmail",
+                        ResourceSnippetParameters.builder()
+                                .tag("signUp")
+                                .summary("find Duplicated Email")
+                                .description("find Duplicated Email"),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ));
+    }
+
+
+    @Test
+    @DisplayName("GET:api/signUp/findDuplicateNickName")
+    void findDuplicateNickName() throws Exception {
+        //make Test Request
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/signUp/findDuplicateNickName")
+                        .param("nickname","abcd")
+                )
+                .andExpect(status().isOk())
+                // Make API Document for result
+                .andDo(MockMvcRestDocumentationWrapper.document("findDuplicateNickName",
+                        ResourceSnippetParameters.builder()
+                                .tag("signUp")
+                                .summary("find Duplicated NickName")
+                                .description("find Duplicated NickName"),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ));
+    }
 }

@@ -33,26 +33,6 @@ public class LoginController {
     }
 
     /**
-     * find duplicate email by user input email
-     * @param reqDto
-     * @return int value, if exist, it returns exist count. if it is not duplicated, return 0
-     */
-    @GetMapping("/findDuplicateEmail")
-    public ResponseEntity<Integer> findDuplicateEmail(LoginReqDto reqDto) {
-        return ResponseEntity.ok(loginService.findDuplicateEmail(reqDto.convert()));
-    }
-
-    /**
-     * find duplicate nickName by user input nickName
-     * @param reqDto
-     * @return if it is not duplcated, return success. if it is duplicated, return random 3 nickname value
-     */
-    @GetMapping("/findDuplicateNickName")
-    public ResponseEntity<FindDuplicateNickNameResDto> findDuplicateNickName(LoginReqDto reqDto) {
-        return ResponseEntity.ok(loginService.findDuplicateNickName(reqDto.convert()));
-    }
-
-    /**
      * insert new User's information
      * @param reqDto
      * @return http requet body OK

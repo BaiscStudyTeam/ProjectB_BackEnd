@@ -3,6 +3,7 @@ package com.objeto.login.service;
 import com.objeto.common.constants.CommonConstants;
 import com.objeto.common.mail.MyjavaMailSender;
 import com.objeto.login.dto.LoginDto;
+import com.objeto.login.dto.response.FindDuplicateNickNameResDto;
 import com.objeto.login.entity.User;
 import com.objeto.login.repository.UserRepository;
 import com.objeto.security.encrypt.EncryptUtils;
@@ -16,6 +17,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -57,5 +59,35 @@ public class SignInService {
     public boolean checkEmailCode(String code) {
         if(redisTemplate.hasKey(code)) return true;
         else return false;
+    }
+
+
+    public int findDuplicateEmail(LoginDto dto) {
+        return userRepository.countByEmail(dto.getEmail());
+    }
+
+    public FindDuplicateNickNameResDto findDuplicateNickName(LoginDto dto) {
+        int cnt =  userRepository.countByNickname(dto.getNickName());
+        String nickname = dto.getNickName();
+        if(cnt > 0) nickname = makeRandomNickname(nickname);
+
+        return FindDuplicateNickNameResDto.builder().nickname(nickname).build();
+    }
+
+    private String makeRandomNickname(String nickname) {
+        String changedNickName = nickname + getRandomNDigitNumber(7);
+        while (true) {
+            if(userRepository.countByNickname(changedNickName) == 0) break;
+            else changedNickName = nickname + getRandomNDigitNumber(7);
+        }
+        return changedNickName;
+    }
+
+    public String getRandomNDigitNumber(int n){
+        String bound = "1";
+        for (int i = 0; i < n; i++) bound += "0";
+        Random random = new Random();
+        int random5Digit = random.nextInt(Integer.parseInt(bound));
+        return String.valueOf(random5Digit);
     }
 }
