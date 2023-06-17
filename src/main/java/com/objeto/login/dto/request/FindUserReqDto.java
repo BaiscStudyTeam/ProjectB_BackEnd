@@ -2,8 +2,6 @@ package com.objeto.login.dto.request;
 
 import com.objeto.login.dto.LoginDto;
 import com.objeto.security.PatternUtils;
-import com.objeto.security.encrypt.EncryptUtils;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
@@ -11,7 +9,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class LoginReqDto {
+public class FindUserReqDto {
 
     @NotEmpty
     @Pattern(regexp = PatternUtils.emailPattern)
@@ -22,7 +20,7 @@ public class LoginReqDto {
     private String password;
 
     @Builder
-    public LoginReqDto(String email, String password) {
+    public FindUserReqDto(String email, String password) {
         this.email = email;
         this.password = password;
     }

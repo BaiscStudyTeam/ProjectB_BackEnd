@@ -1,5 +1,6 @@
 package com.objeto.login.service;
 
+import com.objeto.login.entity.MyUserDetails;
 import com.objeto.login.entity.User;
 import com.objeto.login.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,18 +21,18 @@ public class MyUserDetailService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findUserByEmail(email);
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        User user = userRepository.findUserByUserId(userId);
 
         // 인증 실패 시
         if(Objects.isNull(user)) new BadCredentialsException("JwtAuthToken validation Failed : UserDetail returns Empty User");
 
         // 인증 성공 시
         log.info("Success find member {}", user);
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getNickname())
-                .password(user.getPassword())
-                .roles("USER")
-                .build();
+        MyUserDetails details = new MyUserDetails();
+        details.setUserId(user.getUserId());
+        details.setNickname(user.getNickname());
+        details.setEmail(user.getEmail());
+        return details;
     }
 }
