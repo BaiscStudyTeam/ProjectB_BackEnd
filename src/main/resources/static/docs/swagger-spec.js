@@ -6,7 +6,7 @@ window.swaggerSpec={
     "version" : "0.0.1-SNAPSHOT"
   },
   "servers" : [ {
-    "url" : "http://ec2-3-36-99-194.ap-northeast-2.compute.amazonaws.com:8080"
+    "url" : "http://localhost:8080"
   } ],
   "tags" : [ ],
   "paths" : {
@@ -36,11 +36,11 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-findUser486549215"
+                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
                 },
                 "examples" : {
                   "findUser" : {
-                    "value" : "input this jwtToken in .http test file : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJ1c2VySWQiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJpYXQiOjE2ODcwMDQ2MDMsImV4cCI6MTY4NzAwNjQwM30.wgsEUoud120yFBxwRU2mfrxOF4UnYEyXsR_36sz52Mg"
+                    "value" : "input this jwtToken in .http test file : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJ1c2VySWQiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJpYXQiOjE2ODcwMDk0NzIsImV4cCI6MTY4NzAxMTI3Mn0.Ky-ZMpblu2dUc9pSmOE926FR9H96gsAptr_p-drbCBE"
                   }
                 }
               }
@@ -75,7 +75,7 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-findUser486549215"
+                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
                 },
                 "examples" : {
                   "removeUser" : {
@@ -102,7 +102,7 @@ window.swaggerSpec={
               },
               "examples" : {
                 "saveUser" : {
-                  "value" : "{\r\n  \"email\" : \"abcd0.7561423370680969@naver.com\",\r\n  \"nickName\" : \"abcd\",\r\n  \"password\" : \"abcd1234!\",\r\n  \"emailAuthCode\" : null,\r\n  \"userUUID\" : \"44ea8609-b202-4af8-b06d-36f135\"\r\n}"
+                  "value" : "{\r\n  \"email\" : \"abcd0.3757509479875524@naver.com\",\r\n  \"nickName\" : \"abcd\",\r\n  \"password\" : \"abcd1234!\",\r\n  \"emailAuthCode\" : null,\r\n  \"userUUID\" : \"e61bfc74-5405-4086-9be3-b55116\"\r\n}"
                 }
               }
             }
@@ -114,7 +114,7 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-findUser486549215"
+                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
                 },
                 "examples" : {
                   "saveUser" : {
@@ -153,7 +153,7 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-findUser486549215"
+                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
                 },
                 "examples" : {
                   "updateUser" : {
@@ -178,7 +178,7 @@ window.swaggerSpec={
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-findUser486549215"
+                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
                 },
                 "examples" : {
                   "findDuplicateEmail" : {
@@ -193,21 +193,30 @@ window.swaggerSpec={
     },
     "/api/signUp/findDuplicateNickName" : {
       "get" : {
-        "tags" : [ "signUp" ],
-        "summary" : "find Duplicated NickName",
-        "description" : "find Duplicated NickName",
+        "tags" : [ "api" ],
+        "summary" : "유저 생성",
+        "description" : "유저 생성",
         "operationId" : "findDuplicateNickName",
+        "parameters" : [ {
+          "name" : "nickname",
+          "in" : "query",
+          "description" : "nickname",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
         "responses" : {
           "200" : {
             "description" : "200",
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-findUser486549215"
+                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
                 },
                 "examples" : {
                   "findDuplicateNickName" : {
-                    "value" : "{\r\n  \"nickname\" : \"abcd3258471\"\r\n}"
+                    "value" : "{\"nickname\":\"abcd1144825\"}"
                   }
                 }
               }
@@ -242,7 +251,7 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-findUser486549215"
+                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
                 },
                 "examples" : {
                   "sendVarificationEmail" : {
@@ -267,7 +276,7 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-findUser486549215"
+                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
                 },
                 "examples" : {
                   "checkEmailCode" : {
@@ -303,7 +312,7 @@ window.swaggerSpec={
         "title" : "LoginReqDto.password",
         "type" : "object"
       },
-      "api-login-findUser486549215" : {
+      "api-signUp-findDuplicateEmail486549215" : {
         "type" : "object"
       }
     }

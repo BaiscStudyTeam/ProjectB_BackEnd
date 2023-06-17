@@ -1,6 +1,4 @@
-import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
-import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.epages.restdocs.apispec.Schema;
+import com.epages.restdocs.apispec.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.objeto.SpringBootApplicationMain;
 import com.objeto.login.dto.request.FindUserReqDto;
@@ -8,6 +6,7 @@ import com.objeto.login.dto.request.InsertUserReqDto;
 import com.objeto.login.dto.request.RemoveUserReqDto;
 import com.objeto.login.dto.request.UpdateUserReqDto;
 import com.objeto.signup.dto.request.SendVarificationEmailReqDto;
+import org.hibernate.query.QueryParameter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +15,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.operation.preprocess.Preprocessors;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.payload.PayloadDocumentation;
+import org.springframework.restdocs.request.ParameterDescriptor;
+import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = SpringBootApplicationMain.class)
@@ -199,6 +203,9 @@ public class LoginControllerTest {
                                 .queryParameters(
                                         parameterWithName("email").description("email")
                                 )
+                                .responseFields(
+                                        fieldWithPath("email").description("email").type(JsonFieldType.STRING)
+                                )
                                 .tag("signUp")
                                 .summary("find Duplicated Email")
                                 .description("find Duplicated Email"),
@@ -216,12 +223,14 @@ public class LoginControllerTest {
                 .andExpect(status().isOk())
                 // Make API Document for result
                 .andDo(MockMvcRestDocumentationWrapper.document("findDuplicateNickName",
-                        ResourceSnippetParameters.builder()
-                                .tag("signUp")
-                                .summary("find Duplicated NickName")
-                                .description("find Duplicated NickName"),
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())
+                        ResourceDocumentation.resource(
+                                ResourceSnippetParameters.builder()
+                                        .description("유저 생성")
+                                        .queryParameters(
+                                            parameterWithName("nickname").description("nickname")
+                                        )
+                                        .build()
+                        )
                 ));
     }
 }
