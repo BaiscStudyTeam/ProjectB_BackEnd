@@ -26,11 +26,15 @@ public class InsertUserReqDto {
     @Pattern(regexp = PatternUtils.passwordPattern)
     private String password;
 
+    @NotEmpty
+    private String emailAuthCode;
+
     @Builder
-    public InsertUserReqDto(String email, String nickName, String password) {
+    public InsertUserReqDto(String email, String nickName, String password, String emailAuthCode) {
         this.email = email;
         this.nickName = nickName;
         this.password = password;
+        this.emailAuthCode = emailAuthCode;
     }
 
     public String getUserUUID() {

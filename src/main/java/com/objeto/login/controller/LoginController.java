@@ -2,7 +2,7 @@ package com.objeto.login.controller;
 
 import com.objeto.login.dto.request.RemoveUserReqDto;
 import com.objeto.login.dto.request.UpdateUserReqDto;
-import jakarta.servlet.http.HttpServletResponse;
+import com.objeto.login.dto.response.FindDuplicateNickNameResDto;
 import lombok.extern.slf4j.Slf4j;
 import com.objeto.login.dto.request.InsertUserReqDto;
 import com.objeto.login.dto.request.LoginReqDto;
@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -29,9 +27,29 @@ public class LoginController {
      * @return jwt Token String value
      */
     @GetMapping("/findUser")
-    public String login(LoginReqDto reqDto) throws IOException {
+    public String findUser(LoginReqDto reqDto) {
         String token = loginService.validateLogin(reqDto.convert());
         return "input this jwtToken in .http test file : " + token;
+    }
+
+    /**
+     * find duplicate email by user input email
+     * @param reqDto
+     * @return int value, if exist, it returns exist count. if it is not duplicated, return 0
+     */
+    @GetMapping("/findDuplicateEmail")
+    public ResponseEntity<Integer> findDuplicateEmail(LoginReqDto reqDto) {
+        return ResponseEntity.ok(loginService.findDuplicateEmail(reqDto.convert()));
+    }
+
+    /**
+     * find duplicate nickName by user input nickName
+     * @param reqDto
+     * @return if it is not duplcated, return success. if it is duplicated, return random 3 nickname value
+     */
+    @GetMapping("/findDuplicateNickName")
+    public ResponseEntity<FindDuplicateNickNameResDto> findDuplicateNickName(LoginReqDto reqDto) {
+        return ResponseEntity.ok(loginService.findDuplicateNickName(reqDto.convert()));
     }
 
     /**
@@ -41,12 +59,13 @@ public class LoginController {
      */
     @PostMapping("/saveUser")
     public ResponseEntity<String> insertUser(@RequestBody InsertUserReqDto reqDto) {
-        loginService.insertLoginUser(reqDto.convert());
+        loginService.insertLoginUser(reqDto);
         return ResponseEntity.ok("your account has been created. go to address \\home.html");
     }
 
     @PutMapping("/updateUser")
     public ResponseEntity<String> updateUser(@RequestBody UpdateUserReqDto reqDto) {
+        loginService.updateUser(reqDto.convert());
         return ResponseEntity.ok("your account info updated.");
     }
 

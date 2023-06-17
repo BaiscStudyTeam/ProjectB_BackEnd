@@ -85,7 +85,7 @@ public class LoginControllerTest {
     @DisplayName("PUT:api/login/updateUser")
     void modifyUserTest() throws Exception {
         //make Test Request
-        UpdateUserReqDto dto = UpdateUserReqDto.builder().email("zaxscd95@naver.com").build();
+        UpdateUserReqDto dto = UpdateUserReqDto.builder().userId("").build();
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/login/updateUser")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto))
