@@ -26,8 +26,8 @@ public class LoginController {
      * @param reqDto
      * @return jwt Token String value
      */
-    @GetMapping("/findUser")
-    public String findUser(LoginReqDto reqDto) {
+    @PostMapping("/findUser")
+    public String findUser(@RequestBody FindUserReqDto reqDto) {
         String token = loginService.validateLogin(reqDto.convert());
         return "input this jwtToken in .http test file : " + token;
     }
