@@ -31,7 +31,7 @@ public class SignInService {
     @Transactional
     public User insertLoginUser(InsertUserReqDto dto) {
         // If user send email is not same as redis email authentication email, throw authentication error
-        if(!dto.getEmail().equals(redisTemplate.opsForValue().get(dto.getEmailAuthCode()))) {
+        if(!dto.getEmailAuthCode().equals(redisTemplate.opsForValue().get(dto.getEmail()))) {
             throw new BadCredentialsException("email code not found");
         }
         return userRepository.save(dto.convert().toEntity());
@@ -52,9 +52,9 @@ public class SignInService {
         javaMailSender.send(message);
     }
 
-    public void saveVarificationCodeToRedis(String email, String code) {
+    public void saveVarificationCodeToRedis(String code, String email) {
         System.out.println("varificationCode is : " + code);
-        redisTemplate.opsForValue().append(email, code);
+        redisTemplate.opsForValue().set(email, code);
         redisTemplate.expire(code, 300, TimeUnit.SECONDS);
     }
 
