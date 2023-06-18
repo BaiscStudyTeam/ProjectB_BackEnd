@@ -88,13 +88,50 @@ configurations.all {
         exclude group: "com.sun.activation", module: "jakarta.activation"
     }
 }
-/*test {
-    outputs.dir snippetsDir
-    exclude 'com.example.objeto' // skip Test
-    useJUnitPlatform()
-}
 
-
+//test {
+//    outputs.dir snippetsDir
+//    exclude 'com.example.objeto' // skip Test
+//    useJUnitPlatform()
+//}
+//
+//
+//// define Standard OpenApi Spec & ascciDoc generate Directory
+//openapi3 {
+//    server = 'http://ec2-3-36-99-194.ap-northeast-2.compute.amazonaws.com:8080'
+//    title = 'RestDocs to Swagger 변환 테스트'
+//    description = 'Restdocs로 API 문서 작성 후 이를 Swagger로 변환하는 페이지'
+//    version = '0.0.1-SNAPSHOT'
+//    format = 'yaml'
+//}
+//asciidoctor {
+//    inputs.dir snippetsDir
+//    dependsOn test
+//}
+//
+//tasks.register('copySwaggerFileWhenBuild', Copy) {
+//    dependsOn 'bootJar'
+//    from("${project.buildDir}/resources/main/static/docs")
+//    into("${project.buildDir}/resources/main/static/docs")
+//}
+//tasks.register('copySwaggerUI', Copy) {
+//    dependsOn 'generateSwaggerUISample'
+//
+//    def generateSwaggerUISampleTask = tasks.named('generateSwaggerUISample', GenerateSwaggerUI).get()
+//
+//    from("${generateSwaggerUISampleTask.outputDir}")
+//    into("${project.buildDir}/resources/main/static/docs")
+//}
+//tasks.withType(BootJar) {
+//    dependsOn 'copySwaggerUI'
+//}
+//tasks.withType(GenerateSwaggerUI) {
+//    dependsOn 'openapi3'
+//}
+//swaggerSources {
+//    sample {
+//        setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
+//}
 
 
 
