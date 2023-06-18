@@ -40,7 +40,7 @@ window.swaggerSpec={
                 },
                 "examples" : {
                   "findUser" : {
-                    "value" : "input this jwtToken in .http test file : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJ1c2VySWQiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJpYXQiOjE2ODcwNTQwMzIsImV4cCI6MTY4NzA1NTgzMn0.-q0ThCMD301G2roVVLurcR2cBttVfk8l6Um0nYHAUOU"
+                    "value" : "input this jwtToken in .http test file : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJ1c2VySWQiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJpYXQiOjE2ODcwODA4MjAsImV4cCI6MTY4NzA4MjYyMH0.Zxx_PSJ9-tqeLGhYoufVnAf9aDlrMdXivCJAZGiQ20s"
                   }
                 }
               }
@@ -127,6 +127,58 @@ window.swaggerSpec={
         }
       }
     },
+    "/api/mainPost/findTopPostThumbnailList" : {
+      "get" : {
+        "tags" : [ "post" ],
+        "summary" : "find post list",
+        "description" : "find post list",
+        "operationId" : "findThumbnailList",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
+                },
+                "examples" : {
+                  "findThumbnailList" : {
+                    "value" : "[ {\r\n  \"postId\" : \"fa17969d-aa94-4801-9be1-2f6a9d\",\r\n  \"userId\" : \"5394e39b-a863-427d-8121-1a7e69\",\r\n  \"title\" : \"1234\",\r\n  \"contentSum\" : \"1234....\",\r\n  \"thumbnailImg\" : \"1234\",\r\n  \"regDt\" : \"2023-06-18T09:33:40.000+00:00\"\r\n}, {\r\n  \"postId\" : \"48c1ad60-1e22-45f2-8748-89203f\",\r\n  \"userId\" : \"5394e39b-a863-427d-8121-1a7e69\",\r\n  \"title\" : \"1234\",\r\n  \"contentSum\" : \"1234....\",\r\n  \"thumbnailImg\" : \"1234\",\r\n  \"regDt\" : \"2023-06-18T09:32:48.000+00:00\"\r\n}, {\r\n  \"postId\" : \"c11e2a99-2dc0-48e6-9240-5e440d\",\r\n  \"userId\" : \"5394e39b-a863-427d-8121-1a7e69\",\r\n  \"title\" : \"1234\",\r\n  \"contentSum\" : \"1234....\",\r\n  \"thumbnailImg\" : \"1234\",\r\n  \"regDt\" : \"2023-06-18T09:32:17.000+00:00\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/post/savePost" : {
+      "put" : {
+        "tags" : [ "post" ],
+        "summary" : "save post list",
+        "description" : "save post list",
+        "operationId" : "savePost",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/api-login-updateUser486549215"
+              },
+              "examples" : {
+                "savePost" : {
+                  "value" : "{\r\n  \"userId\" : \"5394e39b-a863-427d-8121-1a7e69\",\r\n  \"postTitle\" : \"1234\",\r\n  \"postType\" : \"N\",\r\n  \"postFile\" : \"1234\",\r\n  \"content\" : \"1111111111111\",\r\n  \"contentSum\" : \"1234....\",\r\n  \"thumbnailImg\" : \"1234\",\r\n  \"regDt\" : 1687080819762\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          }
+        }
+      }
+    },
     "/api/signUp/findDuplicateEmail" : {
       "get" : {
         "tags" : [ "signUp" ],
@@ -186,7 +238,7 @@ window.swaggerSpec={
                 },
                 "examples" : {
                   "findDuplicateNickName" : {
-                    "value" : "{\"nickname\":\"abcd7358860\"}"
+                    "value" : "{\"nickname\":\"abcd8711791\"}"
                   }
                 }
               }
@@ -209,7 +261,7 @@ window.swaggerSpec={
               },
               "examples" : {
                 "saveUser" : {
-                  "value" : "{\r\n  \"email\" : \"zaxscd95@gmail.com\",\r\n  \"nickName\" : \"abcd\",\r\n  \"password\" : \"abcd1234!\",\r\n  \"emailAuthCode\" : \"f7bf8736-0663-4721-a55d-43ac10\",\r\n  \"userUUID\" : \"276b35c1-448f-4541-8ae6-1609cc\"\r\n}"
+                  "value" : "{\r\n  \"email\" : \"zaxscd951444456@gmail.com\",\r\n  \"nickName\" : \"abcd\",\r\n  \"password\" : \"abcd1234!\",\r\n  \"emailAuthCode\" : \"384a475f-6150-49cf-aaa6-0eafe4\",\r\n  \"userUUID\" : \"5173b2e6-a0b7-4238-b6e1-9fc7b6\"\r\n}"
                 }
               }
             }
@@ -248,7 +300,7 @@ window.swaggerSpec={
               },
               "examples" : {
                 "sendVarificationEmail" : {
-                  "value" : "{\r\n  \"email\" : \"objetonoreply@gmail.com\"\r\n}"
+                  "value" : "{\r\n  \"email\" : \"zaxscd15@gmail.com\"\r\n}"
                 }
               }
             }

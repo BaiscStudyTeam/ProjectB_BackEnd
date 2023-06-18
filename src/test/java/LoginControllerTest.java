@@ -5,6 +5,7 @@ import com.objeto.login.dto.request.FindUserReqDto;
 import com.objeto.login.dto.request.InsertUserReqDto;
 import com.objeto.login.dto.request.RemoveUserReqDto;
 import com.objeto.login.dto.request.UpdateUserReqDto;
+import com.objeto.post.dto.request.SavePostReqDto;
 import com.objeto.signup.dto.request.SendVarificationEmailReqDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -73,7 +74,7 @@ public class LoginControllerTest {
         UpdateUserReqDto dto = UpdateUserReqDto.builder().nickname("7777").password("5555").build();
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/login/updateUser")
                         // Need Jwt Token that findUser method provide
-                        .header("X-AUTH-TOKEN", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJ1c2VySWQiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJpYXQiOjE2ODY5OTgwNDMsImV4cCI6MTcwNDk5ODA0M30.FQ7DcO7IkbB6MthEGMzL8wRpQ4cRTXvDyWlV7FisH_c")
+                        .header("X-AUTH-TOKEN", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJ1c2VySWQiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJpYXQiOjE2ODcwNzkxNDMsImV4cCI6MTY4NzA4MDk0M30.25eIPuBgU3d8Pk_ZPMi5-eAE0tcCq0ISkRP6Fm_wuWs")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto))
                 )
@@ -119,7 +120,7 @@ public class LoginControllerTest {
     @DisplayName("POST:api/signIn/sendVarificationEmail")
     void sendVarificationEmail() throws Exception {
         //make Test Request
-        SendVarificationEmailReqDto dto = SendVarificationEmailReqDto.builder().email("objetonoreply@gmail.com").build();
+        SendVarificationEmailReqDto dto = SendVarificationEmailReqDto.builder().email("zaxscd15@gmail.com").build();
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/signUp/sendVarificationEmail")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto))
@@ -205,9 +206,9 @@ public class LoginControllerTest {
     void insertUserTest() throws Exception {
         //make Test Request
         InsertUserReqDto dto = InsertUserReqDto.builder()
-                .email("zaxscd95@gmail.com")
+                .email("zaxscd951444456@gmail.com")
                 .password("abcd1234!")
-                .emailAuthCode("f7bf8736-0663-4721-a55d-43ac10")
+                .emailAuthCode("384a475f-6150-49cf-aaa6-0eafe4")
                 .nickName("abcd").build();
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/signUp/saveUser")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -223,6 +224,56 @@ public class LoginControllerTest {
                                 .requestSchema(Schema.schema("InsertUserReqDto.email"))
                                 .requestSchema(Schema.schema("InsertUserReqDto.password"))
                                 .requestSchema(Schema.schema("InsertUserReqDto.nickname")),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ));
+
+    }
+
+
+    @Test
+    @DisplayName("GET:api/mainPost/findTopPostThumbnailList")
+    void findThumbnail() throws Exception {
+        //make Test Request
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/mainPost/findTopPostThumbnailList"))
+                .andExpect(status().isOk())
+                // Make API Document for result
+                .andDo(MockMvcRestDocumentationWrapper.document("findThumbnailList",
+                        ResourceSnippetParameters.builder()
+                                .tag("post")
+                                .summary("find post list")
+                                .description("find post list"),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ));
+
+    }
+
+
+    @Test
+    @DisplayName("PUT:api/post/savePost")
+    void savePost() throws Exception {
+        //make Test Request
+        SavePostReqDto reqDto = SavePostReqDto.builder()
+                .userId("5394e39b-a863-427d-8121-1a7e69")
+                .postFile("1234")
+                .postTitle("1234")
+                .postType("N")
+                .content("1111111111111")
+                .thumbnailImg("1234")
+                .contentSum("1234....")
+                .build();
+        mockMvc.perform(RestDocumentationRequestBuilders.put("/api/post/savePost")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(reqDto))
+                )
+                .andExpect(status().isOk())
+                // Make API Document for result
+                .andDo(MockMvcRestDocumentationWrapper.document("savePost",
+                        ResourceSnippetParameters.builder()
+                                .tag("post")
+                                .summary("save post list")
+                                .description("save post list"),
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())
                 ));
