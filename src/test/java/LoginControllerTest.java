@@ -72,33 +72,7 @@ public class LoginControllerTest {
 
     }
 
-    @Test
-    @DisplayName("POST:api/login/saveUser")
-    void insertUserTest() throws Exception {
-        //make Test Request
-        InsertUserReqDto dto = InsertUserReqDto.builder()
-                                .email("abcd" + Math.random() + "@naver.com")
-                                .password("abcd1234!")
-                                .nickName("abcd").build();
-        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/login/saveUser")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(dto))
-                )
-                .andExpect(status().isOk())
-                // Make API Document for result
-                .andDo(MockMvcRestDocumentationWrapper.document("saveUser",
-                        ResourceSnippetParameters.builder()
-                                .tag("login")
-                                .summary("save User test")
-                                .description("save User's email, password, nickname")
-                                .requestSchema(Schema.schema("InsertUserReqDto.email"))
-                                .requestSchema(Schema.schema("InsertUserReqDto.password"))
-                                .requestSchema(Schema.schema("InsertUserReqDto.nickname")),
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())
-                ));
 
-    }
 
     @Test
     @DisplayName("PUT:api/login/updateUser")
@@ -153,7 +127,7 @@ public class LoginControllerTest {
     @DisplayName("POST:api/signIn/sendVarificationEmail")
     void sendVarificationEmail() throws Exception {
         //make Test Request
-        SendVarificationEmailReqDto dto = SendVarificationEmailReqDto.builder().email("zaxscd95@gmail.com").build();
+        SendVarificationEmailReqDto dto = SendVarificationEmailReqDto.builder().email("objetonoreply@gmail.com").build();
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/signUp/sendVarificationEmail")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto))
@@ -199,18 +173,16 @@ public class LoginControllerTest {
                 .andExpect(status().isOk())
                 // Make API Document for result
                 .andDo(MockMvcRestDocumentationWrapper.document("findDuplicateEmail",
-                        ResourceSnippetParameters.builder()
-                                .queryParameters(
-                                        parameterWithName("email").description("email")
-                                )
-                                .responseFields(
-                                        fieldWithPath("email").description("email").type(JsonFieldType.STRING)
-                                )
-                                .tag("signUp")
-                                .summary("find Duplicated Email")
-                                .description("find Duplicated Email"),
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())
+                        ResourceDocumentation.resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("signUp")
+                                        .description("find Duplicate email")
+                                        .summary("find Duplicate email")
+                                        .queryParameters(
+                                                parameterWithName("email").description("email")
+                                        )
+                                        .build()
+                        )
                 ));
     }
 
@@ -225,12 +197,43 @@ public class LoginControllerTest {
                 .andDo(MockMvcRestDocumentationWrapper.document("findDuplicateNickName",
                         ResourceDocumentation.resource(
                                 ResourceSnippetParameters.builder()
-                                        .description("유저 생성")
+                                        .tag("signUp")
+                                        .description("find Duplicate NickName")
+                                        .summary("find Duplicate Nickname and if it is duplicate, give new Nickname")
                                         .queryParameters(
                                             parameterWithName("nickname").description("nickname")
                                         )
                                         .build()
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("POST:api/signUp/saveUser")
+    void insertUserTest() throws Exception {
+        //make Test Request
+        InsertUserReqDto dto = InsertUserReqDto.builder()
+                .email("zaxscd95@gmail.com")
+                .password("abcd1234!")
+                .emailAuthCode("f7bf8736-0663-4721-a55d-43ac10")
+                .nickName("abcd").build();
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/signUp/saveUser")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(dto))
+                )
+                .andExpect(status().isOk())
+                // Make API Document for result
+                .andDo(MockMvcRestDocumentationWrapper.document("saveUser",
+                        ResourceSnippetParameters.builder()
+                                .tag("signUp")
+                                .summary("save User test")
+                                .description("save User's email, password, nickname")
+                                .requestSchema(Schema.schema("InsertUserReqDto.email"))
+                                .requestSchema(Schema.schema("InsertUserReqDto.password"))
+                                .requestSchema(Schema.schema("InsertUserReqDto.nickname")),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ));
+
     }
 }

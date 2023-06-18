@@ -6,7 +6,7 @@ window.swaggerSpec={
     "version" : "0.0.1-SNAPSHOT"
   },
   "servers" : [ {
-    "url" : "http://localhost:8080"
+    "url" : "http://ec2-3-36-99-194.ap-northeast-2.compute.amazonaws.com:8080"
   } ],
   "tags" : [ ],
   "paths" : {
@@ -36,11 +36,11 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
+                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
                 },
                 "examples" : {
                   "findUser" : {
-                    "value" : "input this jwtToken in .http test file : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJ1c2VySWQiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJpYXQiOjE2ODcwMDk0NzIsImV4cCI6MTY4NzAxMTI3Mn0.Ky-ZMpblu2dUc9pSmOE926FR9H96gsAptr_p-drbCBE"
+                    "value" : "input this jwtToken in .http test file : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJ1c2VySWQiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJpYXQiOjE2ODcwNTQwMzIsImV4cCI6MTY4NzA1NTgzMn0.-q0ThCMD301G2roVVLurcR2cBttVfk8l6Um0nYHAUOU"
                   }
                 }
               }
@@ -75,50 +75,11 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
+                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
                 },
                 "examples" : {
                   "removeUser" : {
                     "value" : "your account info removed."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/login/saveUser" : {
-      "post" : {
-        "tags" : [ "login" ],
-        "summary" : "save User test",
-        "description" : "save User's email, password, nickname",
-        "operationId" : "saveUser",
-        "requestBody" : {
-          "content" : {
-            "application/json;charset=UTF-8" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/InsertUserReqDto.nickname"
-              },
-              "examples" : {
-                "saveUser" : {
-                  "value" : "{\r\n  \"email\" : \"abcd0.3757509479875524@naver.com\",\r\n  \"nickName\" : \"abcd\",\r\n  \"password\" : \"abcd1234!\",\r\n  \"emailAuthCode\" : null,\r\n  \"userUUID\" : \"e61bfc74-5405-4086-9be3-b55116\"\r\n}"
-                }
-              }
-            }
-          }
-        },
-        "responses" : {
-          "200" : {
-            "description" : "200",
-            "content" : {
-              "text/plain;charset=UTF-8" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
-                },
-                "examples" : {
-                  "saveUser" : {
-                    "value" : "your account has been created. go to address \\home.html"
                   }
                 }
               }
@@ -153,7 +114,7 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
+                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
                 },
                 "examples" : {
                   "updateUser" : {
@@ -169,16 +130,25 @@ window.swaggerSpec={
     "/api/signUp/findDuplicateEmail" : {
       "get" : {
         "tags" : [ "signUp" ],
-        "summary" : "find Duplicated Email",
-        "description" : "find Duplicated Email",
+        "summary" : "find Duplicate email",
+        "description" : "find Duplicate email",
         "operationId" : "findDuplicateEmail",
+        "parameters" : [ {
+          "name" : "email",
+          "in" : "query",
+          "description" : "email",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
         "responses" : {
           "200" : {
             "description" : "200",
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
+                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
                 },
                 "examples" : {
                   "findDuplicateEmail" : {
@@ -193,9 +163,9 @@ window.swaggerSpec={
     },
     "/api/signUp/findDuplicateNickName" : {
       "get" : {
-        "tags" : [ "api" ],
-        "summary" : "유저 생성",
-        "description" : "유저 생성",
+        "tags" : [ "signUp" ],
+        "summary" : "find Duplicate Nickname and if it is duplicate, give new Nickname",
+        "description" : "find Duplicate NickName",
         "operationId" : "findDuplicateNickName",
         "parameters" : [ {
           "name" : "nickname",
@@ -212,11 +182,50 @@ window.swaggerSpec={
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
+                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
                 },
                 "examples" : {
                   "findDuplicateNickName" : {
-                    "value" : "{\"nickname\":\"abcd1144825\"}"
+                    "value" : "{\"nickname\":\"abcd7358860\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/signUp/saveUser" : {
+      "post" : {
+        "tags" : [ "signUp" ],
+        "summary" : "save User test",
+        "description" : "save User's email, password, nickname",
+        "operationId" : "saveUser",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/InsertUserReqDto.nickname"
+              },
+              "examples" : {
+                "saveUser" : {
+                  "value" : "{\r\n  \"email\" : \"zaxscd95@gmail.com\",\r\n  \"nickName\" : \"abcd\",\r\n  \"password\" : \"abcd1234!\",\r\n  \"emailAuthCode\" : \"f7bf8736-0663-4721-a55d-43ac10\",\r\n  \"userUUID\" : \"276b35c1-448f-4541-8ae6-1609cc\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "text/plain;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
+                },
+                "examples" : {
+                  "saveUser" : {
+                    "value" : "your account has been created. go to address \\home.html"
                   }
                 }
               }
@@ -239,7 +248,7 @@ window.swaggerSpec={
               },
               "examples" : {
                 "sendVarificationEmail" : {
-                  "value" : "{\r\n  \"email\" : \"zaxscd95@gmail.com\"\r\n}"
+                  "value" : "{\r\n  \"email\" : \"objetonoreply@gmail.com\"\r\n}"
                 }
               }
             }
@@ -251,7 +260,7 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
+                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
                 },
                 "examples" : {
                   "sendVarificationEmail" : {
@@ -276,7 +285,7 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
+                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
                 },
                 "examples" : {
                   "checkEmailCode" : {
@@ -312,7 +321,7 @@ window.swaggerSpec={
         "title" : "LoginReqDto.password",
         "type" : "object"
       },
-      "api-signUp-findDuplicateEmail486549215" : {
+      "api-login-updateUser486549215" : {
         "type" : "object"
       }
     }
