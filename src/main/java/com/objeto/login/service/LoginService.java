@@ -28,16 +28,6 @@ public class LoginService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
-    public User insertLoginUser(InsertUserReqDto dto) {
-        if(!validateEmailAuth(dto.getEmailAuthCode())) throw new BadCredentialsException("");
-        return userRepository.save(dto.convert().toEntity());
-    }
-
-    private boolean validateEmailAuth(String emailAuthCode) {
-        return true;
-    }
-
-    @Transactional
     public String validateLogin(LoginDto dto) {
         // check emali duplication
         User member = userRepository.findUserByEmail(dto.getEmail());

@@ -30,17 +30,6 @@ public class LoginController {
         return "input this jwtToken in .http test file : " + token;
     }
 
-    /**
-     * insert new User's information
-     * @param reqDto
-     * @return http requet body OK
-     */
-    @PostMapping("/saveUser")
-    public ResponseEntity<String> insertUser(@RequestBody InsertUserReqDto reqDto) {
-        loginService.insertLoginUser(reqDto);
-        return ResponseEntity.ok("your account has been created. go to address \\home.html");
-    }
-
     @PutMapping("/updateUser")
     public ResponseEntity<String> updateUser(@RequestBody UpdateUserReqDto reqDto) {
         loginService.updateUser(reqDto);

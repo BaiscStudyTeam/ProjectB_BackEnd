@@ -36,8 +36,6 @@ public class SignInService {
     public User insertLoginUser(InsertUserReqDto dto) {
         // If user send email is not same as redis email authentication email, throw authentication error
         if(!dto.getEmail().equals(redisTemplate.opsForValue().get(dto.getEmailAuthCode()))) {
-            System.out.println(redisTemplate.opsForValue().get(dto.getEmailAuthCode()));
-            System.out.println(dto.getEmail());
             throw new BadCredentialsException("email code not found");
         }
         return userRepository.save(dto.convert().toEntity());
@@ -54,7 +52,7 @@ public class SignInService {
         message.setFrom("objetonoreply@gmail.com");
         message.setTo(email);
         message.setSubject("OBJETO Blog SignUp Varification Mail");
-        message.setText("Click here to complete email Varification : " + CommonConstants.serverDomain + "/signUp/checkEmailCode/" + code);
+        message.setText("Your varification code is : " + code);
         myjavaMailSender.getMailSenderImpl().send(message);
     }
 
