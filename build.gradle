@@ -65,11 +65,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     //JWT Security
-    implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    implementation 'javax.xml.bind:jaxb-api:2.1'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
 
     //Mail Implementation
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.boot:spring-boot-starter-mail:3.1.0'
     runtimeOnly "com.sun.activation:jakarta.activation:2.0.1"
 
     //  - 테스트 플러그인
@@ -81,49 +83,17 @@ dependencies {
     swaggerUI 'org.webjars:swagger-ui:4.11.1'                                     //OpenApi3 Document Plugin
 }
 
-//test {
-//    outputs.dir snippetsDir
-//    exclude 'com.example.objeto' // skip Test
-//    useJUnitPlatform()
-//}
-//
-//// define Standard OpenApi Spec & ascciDoc generate Directory
-//openapi3 {
-//    server = 'http://ec2-3-36-99-194.ap-northeast-2.compute.amazonaws.com:8080'
-//    title = 'RestDocs to Swagger 변환 테스트'
-//    description = 'Restdocs로 API 문서 작성 후 이를 Swagger로 변환하는 페이지'
-//    version = '0.0.1-SNAPSHOT'
-//    format = 'yaml'
-//}
-//asciidoctor {
-//    inputs.dir snippetsDir
-//    dependsOn test
-//}
-//
-//tasks.register('copySwaggerFileWhenBuild', Copy) {
-//    dependsOn 'bootJar'
-//    from("${project.buildDir}/resources/main/static/docs")
-//    into("${project.buildDir}/resources/main/static/docs")
-//}
-//tasks.register('copySwaggerUI', Copy) {
-//    dependsOn 'generateSwaggerUISample'
-//
-//    def generateSwaggerUISampleTask = tasks.named('generateSwaggerUISample', GenerateSwaggerUI).get()
-//
-//    from("${generateSwaggerUISampleTask.outputDir}")
-//    into("${project.buildDir}/resources/main/static/docs")
-//}
-//tasks.withType(BootJar) {
-//    dependsOn 'copySwaggerUI'
-//}
-//tasks.withType(GenerateSwaggerUI) {
-//    dependsOn 'openapi3'
-//}
-//swaggerSources {
-//    sample {
-//        setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
-//    }
-//}
+configurations.all {
+    resolutionStrategy {
+        exclude group: "com.sun.activation", module: "jakarta.activation"
+    }
+}
+/*test {
+    outputs.dir snippetsDir
+    exclude 'com.example.objeto' // skip Test
+    useJUnitPlatform()
+}
+
 
 
 

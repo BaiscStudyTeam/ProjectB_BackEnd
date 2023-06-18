@@ -5,7 +5,6 @@ import com.objeto.login.dto.request.InsertUserReqDto;
 import com.objeto.login.dto.response.FindDuplicateNickNameResDto;
 import com.objeto.login.service.SignInService;
 import com.objeto.signup.dto.request.SendVarificationEmailReqDto;
-import jakarta.mail.internet.AddressException;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +36,7 @@ public class SignUpController {
      * @return http requet body OK
      */
     @PostMapping("/sendVarificationEmail")
-    public ResponseEntity<String> sendVarificationEmail(@RequestBody SendVarificationEmailReqDto reqDto) throws AddressException {
+    public ResponseEntity<String> sendVarificationEmail(@RequestBody SendVarificationEmailReqDto reqDto) {
         signInService.sendVarificationEmail(reqDto.toEntity());
         return ResponseEntity.ok("your account has been created. go to address \\home.html");
     }
@@ -48,7 +47,7 @@ public class SignUpController {
      * @return http requet body OK
      */
     @GetMapping("/checkEmailCode/{code}")
-    public ResponseEntity<String> checkEmailCode(@PathVariable String code) throws AddressException {
+    public ResponseEntity<String> checkEmailCode(@PathVariable String code) {
         if(signInService.checkEmailCode(code)) return ResponseEntity.ok("your email varified");
         else return ResponseEntity.ok("your email code is expired or not exist. please send Varification Email Again");
     }

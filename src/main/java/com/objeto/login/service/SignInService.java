@@ -1,7 +1,5 @@
 package com.objeto.login.service;
 
-import com.objeto.common.constants.CommonConstants;
-import com.objeto.common.mail.MyjavaMailSender;
 import com.objeto.login.dto.LoginDto;
 import com.objeto.login.dto.request.InsertUserReqDto;
 import com.objeto.login.dto.response.FindDuplicateNickNameResDto;
@@ -9,12 +7,10 @@ import com.objeto.login.entity.User;
 import com.objeto.login.repository.UserRepository;
 import com.objeto.security.encrypt.EncryptUtils;
 import com.objeto.signup.dto.SignUpDto;
-import jakarta.mail.Session;
-import jakarta.mail.internet.AddressException;
-import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +24,9 @@ public class SignInService {
 
     private final UserRepository userRepository;
 
-    private final MyjavaMailSender myjavaMailSender;
-
     private final StringRedisTemplate redisTemplate;
+
+    private final JavaMailSender javaMailSender;
 
     @Transactional
     public User insertLoginUser(InsertUserReqDto dto) {
@@ -41,7 +37,7 @@ public class SignInService {
         return userRepository.save(dto.convert().toEntity());
     }
 
-    public void sendVarificationEmail(SignUpDto reqDto) throws AddressException {
+    public void sendVarificationEmail(SignUpDto reqDto) {
         String code = EncryptUtils.randomIdGenerator();
         this.saveVarificationCodeToRedis(code, reqDto.getEmail());
         this.sendVarificaiontEmail(reqDto.getEmail(), code);
@@ -53,7 +49,7 @@ public class SignInService {
         message.setTo(email);
         message.setSubject("OBJETO Blog SignUp Varification Mail");
         message.setText("Your varification code is : " + code);
-        myjavaMailSender.getMailSenderImpl().send(message);
+        javaMailSender.send(message);
     }
 
     public void saveVarificationCodeToRedis(String email, String code) {
