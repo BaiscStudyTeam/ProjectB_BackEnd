@@ -3,6 +3,7 @@ package com.objeto.login.service;
 import com.objeto.common.constants.CommonConstants;
 import com.objeto.common.mail.MyjavaMailSender;
 import com.objeto.login.dto.LoginDto;
+import com.objeto.login.dto.request.InsertUserReqDto;
 import com.objeto.login.dto.response.FindDuplicateNickNameResDto;
 import com.objeto.login.entity.User;
 import com.objeto.login.repository.UserRepository;
@@ -14,6 +15,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,13 +33,19 @@ public class SignInService {
     private final StringRedisTemplate redisTemplate;
 
     @Transactional
-    public User insertLoginUser(LoginDto dto) {
-        return userRepository.save(dto.toEntity());
+    public User insertLoginUser(InsertUserReqDto dto) {
+        // If user send email is not same as redis email authentication email, throw authentication error
+        if(!dto.getEmail().equals(redisTemplate.opsForValue().get(dto.getEmailAuthCode()))) {
+            System.out.println(redisTemplate.opsForValue().get(dto.getEmailAuthCode()));
+            System.out.println(dto.getEmail());
+            throw new BadCredentialsException("email code not found");
+        }
+        return userRepository.save(dto.convert().toEntity());
     }
 
     public void sendVarificationEmail(SignUpDto reqDto) throws AddressException {
         String code = EncryptUtils.randomIdGenerator();
-        this.saveVarificationCodeToRedis(code);
+        this.saveVarificationCodeToRedis(code, reqDto.getEmail());
         this.sendVarificaiontEmail(reqDto.getEmail(), code);
     }
 
@@ -50,9 +58,9 @@ public class SignInService {
         myjavaMailSender.getMailSenderImpl().send(message);
     }
 
-    public void saveVarificationCodeToRedis(String code) {
+    public void saveVarificationCodeToRedis(String email, String code) {
         System.out.println("varificationCode is : " + code);
-        redisTemplate.opsForValue().append(code, "true");
+        redisTemplate.opsForValue().append(email, code);
         redisTemplate.expire(code, 300, TimeUnit.SECONDS);
     }
 

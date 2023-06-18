@@ -27,7 +27,7 @@ public class SignUpController {
      */
     @PostMapping("/saveUser")
     public ResponseEntity<String> insertUser(@RequestBody InsertUserReqDto reqDto) {
-        signInService.insertLoginUser(reqDto.convert());
+        signInService.insertLoginUser(reqDto);
         return ResponseEntity.ok("your account has been created. go to address \\home.html");
     }
 
