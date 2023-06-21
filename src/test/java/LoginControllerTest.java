@@ -5,26 +5,33 @@ import com.objeto.login.dto.request.FindUserReqDto;
 import com.objeto.login.dto.request.InsertUserReqDto;
 import com.objeto.login.dto.request.RemoveUserReqDto;
 import com.objeto.login.dto.request.UpdateUserReqDto;
-import com.objeto.post.dto.request.SavePostReqDto;
+import com.objeto.post.dto.request.SavePostReqDtoTest;
 import com.objeto.signup.dto.request.SendVarificationEmailReqDto;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.headers.HeaderDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.FieldDescriptor;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = SpringBootApplicationMain.class)
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
+@TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
 public class LoginControllerTest {
 
     @Autowired
@@ -32,14 +39,20 @@ public class LoginControllerTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
+    private static String accessTokenValue;
+
+    private static String emailauthCode;
+
+    @Order(1)
     @Test
     @DisplayName("POST:api/login/findUser")
-    void loginTest() throws Exception {
-        //make Test Request
+    void loginUserTest() throws Exception {
+
         FindUserReqDto dto = FindUserReqDto.builder()
-                .email("zaxscd95@naver.com")
-                .password("5555")
+                .email("zaxscd95@gmail.com")
+                .password("abcd1234!")
                 .build();
+
         ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.post("/api/login/findUser")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto))
@@ -47,56 +60,94 @@ public class LoginControllerTest {
                 .andExpect(status().isOk())
                 // Make API Document for result
                 .andDo(MockMvcRestDocumentationWrapper.document("findUser",
-                        ResourceSnippetParameters.builder()
-                            .tag("login")
-                            .summary("user Login function")
-                            .description("when user login, give user JwtToken sample to test")
-                            .requestSchema(Schema.schema("LoginReqDto.email"))
-                            .requestSchema(Schema.schema("LoginReqDto.password")),
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())
-        ));
-
-        System.out.println("====================================================");
-        System.out.println("====================================================");
+                        ResourceDocumentation.resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("login").description("do login")
+                                        .summary("login user and give acessToken with HttpOnly cookie")
+                                        .requestSchema(Schema.schema("LoginReqDto"))
+                                        .requestFields(
+                                                fieldWithPath("email").description("Email of the user").type(JsonFieldType.STRING),
+                                                fieldWithPath("password").description("Password of the user").type(JsonFieldType.STRING)
+                                        )
+                                        .build()
+                        )
+                     )
+                );
+        // Set token for Next updateUser value
+        accessTokenValue = actions.andReturn().getResponse().getContentAsString();
         System.out.println(actions.andReturn().getResponse().getContentAsString());
-        System.out.println("====================================================");
-        System.out.println("====================================================");
 
     }
 
-
-
+    @Order(2)
     @Test
     @DisplayName("PUT:api/login/updateUser")
     void modifyUserTest() throws Exception {
-        //make Test Request
-        UpdateUserReqDto dto = UpdateUserReqDto.builder().nickname("7777").password("5555").build();
+
+        UpdateUserReqDto dto = UpdateUserReqDto.builder().nickname("SampleNickname").password("abcd1234!").build();
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/login/updateUser")
                         // Need Jwt Token that findUser method provide
-                        .header("X-AUTH-TOKEN", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJ1c2VySWQiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJpYXQiOjE2ODcwNzkxNDMsImV4cCI6MTY4NzA4MDk0M30.25eIPuBgU3d8Pk_ZPMi5-eAE0tcCq0ISkRP6Fm_wuWs")
+                        .header("X-AUTH-TOKEN", accessTokenValue)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto))
                 )
                 .andExpect(status().isOk())
                 // Make API Document for result
                 .andDo(MockMvcRestDocumentationWrapper.document("updateUser",
-                        ResourceSnippetParameters.builder()
-                                .tag("login")
-                                .summary("update User test")
-                                .description("update User Information")
-                                .requestSchema(Schema.schema("UpdateUserReqDto.email")),
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())
-                ));
+                        ResourceDocumentation.resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("login").summary("update User")
+                                        .description("update User Information with nickname and Password")
+                                        .requestSchema(Schema.schema("UpdateUserReqDto"))
+                                        .requestHeaders(
+                                                new HeaderDescriptorWithType("X-AUTH-TOKEN").description("accessToken header for login User").type(SimpleType.STRING)
+                                        )
+                                        .requestFields(
+                                                fieldWithPath("nickname").description("nickname to change").type(JsonFieldType.STRING),
+                                                fieldWithPath("password").description("Password to change").type(JsonFieldType.STRING)
+                                        )
+                                        .build()
+                        )
+                    )
+                );
 
     }
 
+    @Order(3)
+    @Test
+    @DisplayName("POST:api/signIn/sendVarificationEmail")
+    void sendVarificationEmail() throws Exception {
+
+        SendVarificationEmailReqDto dto = SendVarificationEmailReqDto.builder().email("zaxscd95@gmail.com").build();
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.post("/api/signUp/sendVarificationEmail")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(dto))
+                )
+                .andExpect(status().isOk())
+                // Make API Document for result
+                .andDo(MockMvcRestDocumentationWrapper.document("sendVarificationEmail",
+                        ResourceDocumentation.resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("signUp").summary("send Varification Email")
+                                        .description("send Varification Email")
+                                        .requestSchema(Schema.schema("SendVarificationEmailReqDto"))
+                                        .requestFields(
+                                                fieldWithPath("email").description("Email to send Authentication code").type(JsonFieldType.STRING)
+                                        )
+                                        .build()
+                        )
+                ));
+        // Set token for Next updateUser value
+        emailauthCode = actions.andReturn().getResponse().getContentAsString();
+        System.out.println(actions.andReturn().getResponse().getContentAsString());
+    }
+
+    @Order(4)
     @Test
     @DisplayName("DELETE:api/login/removeUser")
     void removeUserTest() throws Exception {
-        //make Test Request
-        RemoveUserReqDto dto = RemoveUserReqDto.builder().email("zaxscd95@naver.com").build();
+
+        RemoveUserReqDto dto = RemoveUserReqDto.builder().email("zaxscd95@gmail.com").build();
         mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/login/removeUser")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto))
@@ -104,65 +155,28 @@ public class LoginControllerTest {
                 .andExpect(status().isOk())
                 // Make API Document for result
                 .andDo(MockMvcRestDocumentationWrapper.document("removeUser",
-                        ResourceSnippetParameters.builder()
-                                .tag("login")
-                                .summary("remove User Test")
-                                .description("remove user")
-                                .requestSchema(Schema.schema("RemoveUserReqDto.email")),
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())
+                        ResourceDocumentation.resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("signUp").description("remove user")
+                                        .summary("remove user by email")
+                                        .requestSchema(Schema.schema("RemoveUserReqDto"))
+                                        .requestFields(
+                                                fieldWithPath("email").description("Email to find remove User").type(JsonFieldType.STRING)
+                                        )
+                                        .build()
+                        )
                 ));
+
+
 
     }
 
-
-    @Test
-    @DisplayName("POST:api/signIn/sendVarificationEmail")
-    void sendVarificationEmail() throws Exception {
-        //make Test Request
-        SendVarificationEmailReqDto dto = SendVarificationEmailReqDto.builder().email("zaxscd15@gmail.com").build();
-        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/signUp/sendVarificationEmail")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(dto))
-                )
-                .andExpect(status().isOk())
-                // Make API Document for result
-                .andDo(MockMvcRestDocumentationWrapper.document("sendVarificationEmail",
-                        ResourceSnippetParameters.builder()
-                                .tag("signUp")
-                                .summary("send Varification Email")
-                                .description("send Varification Email")
-                                .requestSchema(Schema.schema("SendVarificationEmailReqDto.email")),
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())
-                ));
-
-    }
-
-
-    @Test
-    @DisplayName("GET:api/signIn/checkEmailCode/{code}")
-    void redisTest() throws Exception {
-        //make Test Request
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/signUp/checkEmailCode/" + "9b08af2d-44c5-4bf3-8072-b4b771"))
-                .andExpect(status().isOk())
-                // Make API Document for result
-                .andDo(MockMvcRestDocumentationWrapper.document("checkEmailCode",
-                        ResourceSnippetParameters.builder()
-                                .tag("signUp")
-                                .summary("send Varification redis")
-                                .description("check Varification code in redis. usually it add to Mail Content URL Path Variable."),
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())
-                ));
-
-    }
-
+    @Order(5)
     @Test
     @DisplayName("GET:api/signUp/findDuplicateEmail")
     void findDuplicateEmail() throws Exception {
-        //make Test Request
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/signUp/findDuplicateEmail?email=" + "zaxscd95@naver.com"))
+
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/signUp/findDuplicateEmail?email=" + "zaxscd95@gmail.com"))
                 .andExpect(status().isOk())
                 // Make API Document for result
                 .andDo(MockMvcRestDocumentationWrapper.document("findDuplicateEmail",
@@ -180,11 +194,12 @@ public class LoginControllerTest {
     }
 
 
+    @Order(6)
     @Test
     @DisplayName("GET:api/signUp/findDuplicateNickName")
     void findDuplicateNickName() throws Exception {
         //make Test Request
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/signUp/findDuplicateNickName?nickname=" + "abcd"))
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/signUp/findDuplicateNickName?nickname=" + "abcd" + Math.random()))
                 .andExpect(status().isOk())
                 // Make API Document for result
                 .andDo(MockMvcRestDocumentationWrapper.document("findDuplicateNickName",
@@ -194,88 +209,125 @@ public class LoginControllerTest {
                                         .description("find Duplicate NickName")
                                         .summary("find Duplicate Nickname and if it is duplicate, give new Nickname")
                                         .queryParameters(
-                                            parameterWithName("nickname").description("nickname")
+                                                parameterWithName("nickname").description("nickname")
                                         )
                                         .build()
                         )
                 ));
     }
 
+    @Order(7)
     @Test
     @DisplayName("POST:api/signUp/saveUser")
-    void insertUserTest() throws Exception {
-        //make Test Request
+    void saveUserTest() throws Exception {
+
         InsertUserReqDto dto = InsertUserReqDto.builder()
-                .email("zaxscd951444456@gmail.com")
+                .email("zaxscd95@gmail.com")
                 .password("abcd1234!")
-                .emailAuthCode("384a475f-6150-49cf-aaa6-0eafe4")
+                .emailAuthCode(emailauthCode)
                 .nickName("abcd").build();
+
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/signUp/saveUser")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto))
                 )
                 .andExpect(status().isOk())
                 // Make API Document for result
-                .andDo(MockMvcRestDocumentationWrapper.document("saveUser",
-                        ResourceSnippetParameters.builder()
-                                .tag("signUp")
-                                .summary("save User test")
-                                .description("save User's email, password, nickname")
-                                .requestSchema(Schema.schema("InsertUserReqDto.email"))
-                                .requestSchema(Schema.schema("InsertUserReqDto.password"))
-                                .requestSchema(Schema.schema("InsertUserReqDto.nickname")),
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())
+                .andDo(MockMvcRestDocumentationWrapper.document("findDuplicateNickName",
+                        ResourceDocumentation.resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("signUp").description("save User")
+                                        .summary("save User")
+                                        .requestSchema(Schema.schema("InsertUserReqDto"))
+                                        .requestFields(
+                                                fieldWithPath("email").description("Email to find remove User").type(JsonFieldType.STRING),
+                                                fieldWithPath("password").description("Email to find remove User").type(JsonFieldType.STRING),
+                                                fieldWithPath("emailAuthCode").description("Email to find remove User").type(JsonFieldType.STRING),
+                                                fieldWithPath("nickName").description("Email to find remove User").type(JsonFieldType.STRING)
+                                        )
+                                        .build()
+                        )
                 ));
 
     }
 
-
+    @Order(8)
     @Test
     @DisplayName("GET:api/mainPost/findTopPostThumbnailList")
     void findThumbnail() throws Exception {
+
+        //list.add(fieldWithPath("email").description("Email to find remove User").type(JsonFieldType.STRING));
         //make Test Request
         mockMvc.perform(RestDocumentationRequestBuilders.get("/api/mainPost/findTopPostThumbnailList"))
                 .andExpect(status().isOk())
                 // Make API Document for result
                 .andDo(MockMvcRestDocumentationWrapper.document("findThumbnailList",
-                        ResourceSnippetParameters.builder()
-                                .tag("post")
-                                .summary("find post list")
-                                .description("find post list"),
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())
+                        ResourceDocumentation.resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("mainPost")
+                                        .summary("find main Top post list")
+                                        .description("find main Top post list")
+                                        .responseSchema(Schema.schema("List<Thumbnail>"))
+                                        .responseFields(
+                                                fieldWithPath("[].postId").type(JsonFieldType.STRING).description("top Post Id").optional(),
+                                                fieldWithPath("[].userId").type(JsonFieldType.STRING).description("top post's regist userId").optional(),
+                                                fieldWithPath("[].title").type(JsonFieldType.STRING).description("top post title").optional(),
+                                                fieldWithPath("[].contentSum").type(JsonFieldType.STRING).description("top post content Summary").optional(),
+                                                fieldWithPath("[].thumbnailImg").type(JsonFieldType.STRING).description("top post thumbnail uri").optional(),
+                                                fieldWithPath("[].regDt").type(JsonFieldType.STRING).description("top post registered date").optional()
+                                        )
+                                        .build()
+                        )
+
                 ));
 
     }
 
-
+    @Order(9)
     @Test
     @DisplayName("PUT:api/post/savePost")
     void savePost() throws Exception {
         //make Test Request
-        SavePostReqDto reqDto = SavePostReqDto.builder()
+        SavePostReqDtoTest reqDto = SavePostReqDtoTest
+                .builder()
                 .userId("5394e39b-a863-427d-8121-1a7e69")
                 .postFile("1234")
                 .postTitle("1234")
-                .postType("N")
-                .content("1111111111111")
+                .postType("N") // Normal
+                .content("example-Conetent")
                 .thumbnailImg("1234")
                 .contentSum("1234....")
+                .regDt("2018-12-15T10:00:00") //yyyy-MM-dd'T'HH:mm:ss.SSSZ
+                .zoneId("KOR")
                 .build();
+
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/post/savePost")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(reqDto))
+                        .content(mapper
+                                .writeValueAsString(reqDto)
+                        )
                 )
                 .andExpect(status().isOk())
                 // Make API Document for result
                 .andDo(MockMvcRestDocumentationWrapper.document("savePost",
-                        ResourceSnippetParameters.builder()
-                                .tag("post")
-                                .summary("save post list")
-                                .description("save post list"),
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())
+                        ResourceDocumentation.resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("post").description("save User's post")
+                                        .summary("save User's post")
+                                        .requestSchema(Schema.schema("SavePostReqDto"))
+                                        .requestFields(
+                                                fieldWithPath("userId").description("UserId for post input").type(JsonFieldType.STRING),
+                                                fieldWithPath("postFile").description("postFile for post input").type(JsonFieldType.STRING),
+                                                fieldWithPath("postTitle").description("postTitle for post input").type(JsonFieldType.STRING),
+                                                fieldWithPath("postType").description("postType for post input").type(JsonFieldType.STRING),
+                                                fieldWithPath("content").description("content for post input").type(JsonFieldType.STRING),
+                                                fieldWithPath("thumbnailImg").description("thumbnail img uri for post input").type(JsonFieldType.STRING),
+                                                fieldWithPath("contentSum").description("content Summary for post input").type(JsonFieldType.STRING),
+                                                fieldWithPath("regDt").description("regDt for post input").type(JsonFieldType.STRING),
+                                                fieldWithPath("zoneId").description("ZoneId for post input").type(JsonFieldType.STRING)
+                                        )
+                                        .build()
+                        )
                 ));
 
     }

@@ -1,9 +1,9 @@
 window.swaggerSpec={
   "openapi" : "3.0.1",
   "info" : {
-    "title" : "RestDocs to Swagger 변환 테스트",
-    "description" : "Restdocs로 API 문서 작성 후 이를 Swagger로 변환하는 페이지",
-    "version" : "0.0.1-SNAPSHOT"
+    "title" : "restdocs-swagger API Documentation",
+    "description" : "Spring REST Docs with SwaggerUI.",
+    "version" : "0.0.1"
   },
   "servers" : [ {
     "url" : "http://ec2-13-125-37-156.ap-northeast-2.compute.amazonaws.com:8080"
@@ -13,18 +13,18 @@ window.swaggerSpec={
     "/api/login/findUser" : {
       "post" : {
         "tags" : [ "login" ],
-        "summary" : "user Login function",
-        "description" : "when user login, give user JwtToken sample to test",
+        "summary" : "login user and give acessToken with HttpOnly cookie",
+        "description" : "do login",
         "operationId" : "findUser",
         "requestBody" : {
           "content" : {
             "application/json;charset=UTF-8" : {
               "schema" : {
-                "$ref" : "#/components/schemas/LoginReqDto.password"
+                "$ref" : "#/components/schemas/LoginReqDto"
               },
               "examples" : {
                 "findUser" : {
-                  "value" : "{\r\n  \"email\" : \"zaxscd95@naver.com\",\r\n  \"password\" : \"5555\"\r\n}"
+                  "value" : "{\"email\":\"zaxscd95@gmail.com\",\"password\":\"abcd1234!\"}"
                 }
               }
             }
@@ -36,11 +36,11 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
+                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
                 },
                 "examples" : {
                   "findUser" : {
-                    "value" : "input this jwtToken in .http test file : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJ1c2VySWQiOiI1YWRiODUzZi1hODFhLTQ3OGEtOTdiYS04MDhkOTgiLCJpYXQiOjE2ODcwODA4MjAsImV4cCI6MTY4NzA4MjYyMH0.Zxx_PSJ9-tqeLGhYoufVnAf9aDlrMdXivCJAZGiQ20s"
+                    "value" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0Zjk3NTZhMS1lYTgwLTQwZmMtYjdiZi1iMTZkZTAiLCJ1c2VySWQiOiI0Zjk3NTZhMS1lYTgwLTQwZmMtYjdiZi1iMTZkZTAiLCJpYXQiOjE2ODczMzMwNzYsImV4cCI6MTY4NzMzNDg3Nn0.ixltCqC-E4W5M7NPKSlCaAOJ8v-AZSIT6VupqPh_K54"
                   }
                 }
               }
@@ -51,19 +51,19 @@ window.swaggerSpec={
     },
     "/api/login/removeUser" : {
       "delete" : {
-        "tags" : [ "login" ],
-        "summary" : "remove User Test",
+        "tags" : [ "signUp" ],
+        "summary" : "remove user by email",
         "description" : "remove user",
         "operationId" : "removeUser",
         "requestBody" : {
           "content" : {
             "application/json;charset=UTF-8" : {
               "schema" : {
-                "$ref" : "#/components/schemas/RemoveUserReqDto.email"
+                "$ref" : "#/components/schemas/RemoveUserReqDto"
               },
               "examples" : {
                 "removeUser" : {
-                  "value" : "{\r\n  \"email\" : \"zaxscd95@naver.com\"\r\n}"
+                  "value" : "{\"email\":\"zaxscd95@gmail.com\"}"
                 }
               }
             }
@@ -75,7 +75,7 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
+                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
                 },
                 "examples" : {
                   "removeUser" : {
@@ -91,18 +91,28 @@ window.swaggerSpec={
     "/api/login/updateUser" : {
       "put" : {
         "tags" : [ "login" ],
-        "summary" : "update User test",
-        "description" : "update User Information",
+        "summary" : "update User",
+        "description" : "update User Information with nickname and Password",
         "operationId" : "updateUser",
+        "parameters" : [ {
+          "name" : "X-AUTH-TOKEN",
+          "in" : "header",
+          "description" : "accessToken header for login User",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0Zjk3NTZhMS1lYTgwLTQwZmMtYjdiZi1iMTZkZTAiLCJ1c2VySWQiOiI0Zjk3NTZhMS1lYTgwLTQwZmMtYjdiZi1iMTZkZTAiLCJpYXQiOjE2ODczMzMwNzYsImV4cCI6MTY4NzMzNDg3Nn0.ixltCqC-E4W5M7NPKSlCaAOJ8v-AZSIT6VupqPh_K54"
+        } ],
         "requestBody" : {
           "content" : {
             "application/json;charset=UTF-8" : {
               "schema" : {
-                "$ref" : "#/components/schemas/UpdateUserReqDto.email"
+                "$ref" : "#/components/schemas/UpdateUserReqDto"
               },
               "examples" : {
                 "updateUser" : {
-                  "value" : "{\r\n  \"nickname\" : \"7777\",\r\n  \"password\" : \"5555\"\r\n}"
+                  "value" : "{\"nickname\":\"SampleNickname\",\"password\":\"abcd1234!\"}"
                 }
               }
             }
@@ -114,7 +124,7 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
+                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
                 },
                 "examples" : {
                   "updateUser" : {
@@ -129,9 +139,9 @@ window.swaggerSpec={
     },
     "/api/mainPost/findTopPostThumbnailList" : {
       "get" : {
-        "tags" : [ "post" ],
-        "summary" : "find post list",
-        "description" : "find post list",
+        "tags" : [ "mainPost" ],
+        "summary" : "find main Top post list",
+        "description" : "find main Top post list",
         "operationId" : "findThumbnailList",
         "responses" : {
           "200" : {
@@ -139,11 +149,11 @@ window.swaggerSpec={
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
+                  "$ref" : "#/components/schemas/List<Thumbnail>"
                 },
                 "examples" : {
                   "findThumbnailList" : {
-                    "value" : "[ {\r\n  \"postId\" : \"fa17969d-aa94-4801-9be1-2f6a9d\",\r\n  \"userId\" : \"5394e39b-a863-427d-8121-1a7e69\",\r\n  \"title\" : \"1234\",\r\n  \"contentSum\" : \"1234....\",\r\n  \"thumbnailImg\" : \"1234\",\r\n  \"regDt\" : \"2023-06-18T09:33:40.000+00:00\"\r\n}, {\r\n  \"postId\" : \"48c1ad60-1e22-45f2-8748-89203f\",\r\n  \"userId\" : \"5394e39b-a863-427d-8121-1a7e69\",\r\n  \"title\" : \"1234\",\r\n  \"contentSum\" : \"1234....\",\r\n  \"thumbnailImg\" : \"1234\",\r\n  \"regDt\" : \"2023-06-18T09:32:48.000+00:00\"\r\n}, {\r\n  \"postId\" : \"c11e2a99-2dc0-48e6-9240-5e440d\",\r\n  \"userId\" : \"5394e39b-a863-427d-8121-1a7e69\",\r\n  \"title\" : \"1234\",\r\n  \"contentSum\" : \"1234....\",\r\n  \"thumbnailImg\" : \"1234\",\r\n  \"regDt\" : \"2023-06-18T09:32:17.000+00:00\"\r\n} ]"
+                    "value" : "[{\"postId\":\"115e4ad9-4c5e-4c38-a87b-9e12b6\",\"userId\":\"5394e39b-a863-427d-8121-1a7e69\",\"title\":\"1234\",\"contentSum\":\"1234....\",\"thumbnailImg\":\"1234\",\"regDt\":\"2023-06-21T07:29:41Z\"},{\"postId\":\"e4fede18-b8b7-4a77-a754-e4bbbb\",\"userId\":\"5394e39b-a863-427d-8121-1a7e69\",\"title\":\"1234\",\"contentSum\":\"1234....\",\"thumbnailImg\":\"1234\",\"regDt\":\"2023-06-21T07:18:02Z\"},{\"postId\":\"31e14765-0a59-48f3-be73-d38a31\",\"userId\":\"5394e39b-a863-427d-8121-1a7e69\",\"title\":\"1234\",\"contentSum\":\"1234....\",\"thumbnailImg\":\"1234\",\"regDt\":\"2023-06-21T07:13:28Z\"}]"
                   }
                 }
               }
@@ -155,18 +165,18 @@ window.swaggerSpec={
     "/api/post/savePost" : {
       "put" : {
         "tags" : [ "post" ],
-        "summary" : "save post list",
-        "description" : "save post list",
+        "summary" : "save User's post",
+        "description" : "save User's post",
         "operationId" : "savePost",
         "requestBody" : {
           "content" : {
             "application/json;charset=UTF-8" : {
               "schema" : {
-                "$ref" : "#/components/schemas/api-login-updateUser486549215"
+                "$ref" : "#/components/schemas/SavePostReqDto"
               },
               "examples" : {
                 "savePost" : {
-                  "value" : "{\r\n  \"userId\" : \"5394e39b-a863-427d-8121-1a7e69\",\r\n  \"postTitle\" : \"1234\",\r\n  \"postType\" : \"N\",\r\n  \"postFile\" : \"1234\",\r\n  \"content\" : \"1111111111111\",\r\n  \"contentSum\" : \"1234....\",\r\n  \"thumbnailImg\" : \"1234\",\r\n  \"regDt\" : 1687080819762\r\n}"
+                  "value" : "{\"userId\":\"5394e39b-a863-427d-8121-1a7e69\",\"postTitle\":\"1234\",\"postType\":\"N\",\"postFile\":\"1234\",\"content\":\"example-Conetent\",\"contentSum\":\"1234....\",\"thumbnailImg\":\"1234\",\"regDt\":\"2018-12-15T10:00:00\",\"zoneId\":\"KOR\"}"
                 }
               }
             }
@@ -200,45 +210,11 @@ window.swaggerSpec={
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
+                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
                 },
                 "examples" : {
                   "findDuplicateEmail" : {
-                    "value" : "1"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/signUp/findDuplicateNickName" : {
-      "get" : {
-        "tags" : [ "signUp" ],
-        "summary" : "find Duplicate Nickname and if it is duplicate, give new Nickname",
-        "description" : "find Duplicate NickName",
-        "operationId" : "findDuplicateNickName",
-        "parameters" : [ {
-          "name" : "nickname",
-          "in" : "query",
-          "description" : "nickname",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "200",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
-                },
-                "examples" : {
-                  "findDuplicateNickName" : {
-                    "value" : "{\"nickname\":\"abcd8711791\"}"
+                    "value" : "0"
                   }
                 }
               }
@@ -250,18 +226,18 @@ window.swaggerSpec={
     "/api/signUp/saveUser" : {
       "post" : {
         "tags" : [ "signUp" ],
-        "summary" : "save User test",
-        "description" : "save User's email, password, nickname",
-        "operationId" : "saveUser",
+        "summary" : "save User",
+        "description" : "save User",
+        "operationId" : "findDuplicateNickName",
         "requestBody" : {
           "content" : {
             "application/json;charset=UTF-8" : {
               "schema" : {
-                "$ref" : "#/components/schemas/InsertUserReqDto.nickname"
+                "$ref" : "#/components/schemas/InsertUserReqDto"
               },
               "examples" : {
-                "saveUser" : {
-                  "value" : "{\r\n  \"email\" : \"zaxscd951444456@gmail.com\",\r\n  \"nickName\" : \"abcd\",\r\n  \"password\" : \"abcd1234!\",\r\n  \"emailAuthCode\" : \"384a475f-6150-49cf-aaa6-0eafe4\",\r\n  \"userUUID\" : \"5173b2e6-a0b7-4238-b6e1-9fc7b6\"\r\n}"
+                "findDuplicateNickName" : {
+                  "value" : "{\"email\":\"zaxscd95@gmail.com\",\"nickName\":\"abcd\",\"password\":\"abcd1234!\",\"emailAuthCode\":\"0a55de9f-86a4-428c-bbb0-079865\"}"
                 }
               }
             }
@@ -273,10 +249,10 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
+                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
                 },
                 "examples" : {
-                  "saveUser" : {
+                  "findDuplicateNickName" : {
                     "value" : "your account has been created. go to address \\home.html"
                   }
                 }
@@ -296,11 +272,11 @@ window.swaggerSpec={
           "content" : {
             "application/json;charset=UTF-8" : {
               "schema" : {
-                "$ref" : "#/components/schemas/SendVarificationEmailReqDto.email"
+                "$ref" : "#/components/schemas/SendVarificationEmailReqDto"
               },
               "examples" : {
                 "sendVarificationEmail" : {
-                  "value" : "{\r\n  \"email\" : \"zaxscd15@gmail.com\"\r\n}"
+                  "value" : "{\"email\":\"zaxscd95@gmail.com\"}"
                 }
               }
             }
@@ -312,36 +288,11 @@ window.swaggerSpec={
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
+                  "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
                 },
                 "examples" : {
                   "sendVarificationEmail" : {
-                    "value" : "your account has been created. go to address \\home.html"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/signUp/checkEmailCode/9b08af2d-44c5-4bf3-8072-b4b771" : {
-      "get" : {
-        "tags" : [ "signUp" ],
-        "summary" : "send Varification redis",
-        "description" : "check Varification code in redis. usually it add to Mail Content URL Path Variable.",
-        "operationId" : "checkEmailCode",
-        "responses" : {
-          "200" : {
-            "description" : "200",
-            "content" : {
-              "text/plain;charset=UTF-8" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/api-login-updateUser486549215"
-                },
-                "examples" : {
-                  "checkEmailCode" : {
-                    "value" : "your email code is expired or not exist. please send Varification Email Again"
+                    "value" : "0a55de9f-86a4-428c-bbb0-079865"
                   }
                 }
               }
@@ -353,28 +304,153 @@ window.swaggerSpec={
   },
   "components" : {
     "schemas" : {
-      "InsertUserReqDto.nickname" : {
-        "title" : "InsertUserReqDto.nickname",
+      "RemoveUserReqDto" : {
+        "title" : "RemoveUserReqDto",
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string",
+            "description" : "Email to find remove User"
+          }
+        }
+      },
+      "InsertUserReqDto" : {
+        "title" : "InsertUserReqDto",
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "Email to find remove User"
+          },
+          "nickName" : {
+            "type" : "string",
+            "description" : "Email to find remove User"
+          },
+          "emailAuthCode" : {
+            "type" : "string",
+            "description" : "Email to find remove User"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "Email to find remove User"
+          }
+        }
+      },
+      "List<Thumbnail>" : {
+        "title" : "List<Thumbnail>",
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "regDt" : {
+              "type" : "string",
+              "description" : "top post registered date"
+            },
+            "contentSum" : {
+              "type" : "string",
+              "description" : "top post content Summary"
+            },
+            "thumbnailImg" : {
+              "type" : "string",
+              "description" : "top post thumbnail uri"
+            },
+            "postId" : {
+              "type" : "string",
+              "description" : "top Post Id"
+            },
+            "title" : {
+              "type" : "string",
+              "description" : "top post title"
+            },
+            "userId" : {
+              "type" : "string",
+              "description" : "top post's regist userId"
+            }
+          }
+        }
+      },
+      "SavePostReqDto" : {
+        "title" : "SavePostReqDto",
+        "type" : "object",
+        "properties" : {
+          "regDt" : {
+            "type" : "string",
+            "description" : "regDt for post input"
+          },
+          "postFile" : {
+            "type" : "string",
+            "description" : "postFile for post input"
+          },
+          "postType" : {
+            "type" : "string",
+            "description" : "postType for post input"
+          },
+          "contentSum" : {
+            "type" : "string",
+            "description" : "content Summary for post input"
+          },
+          "zoneId" : {
+            "type" : "string",
+            "description" : "ZoneId for post input"
+          },
+          "postTitle" : {
+            "type" : "string",
+            "description" : "postTitle for post input"
+          },
+          "thumbnailImg" : {
+            "type" : "string",
+            "description" : "thumbnail img uri for post input"
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "UserId for post input"
+          },
+          "content" : {
+            "type" : "string",
+            "description" : "content for post input"
+          }
+        }
+      },
+      "LoginReqDto" : {
+        "title" : "LoginReqDto",
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "Password of the user"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "Email of the user"
+          }
+        }
+      },
+      "api-signUp-findDuplicateEmail486549215" : {
         "type" : "object"
       },
-      "UpdateUserReqDto.email" : {
-        "title" : "UpdateUserReqDto.email",
-        "type" : "object"
+      "SendVarificationEmailReqDto" : {
+        "title" : "SendVarificationEmailReqDto",
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string",
+            "description" : "Email to send Authentication code"
+          }
+        }
       },
-      "RemoveUserReqDto.email" : {
-        "title" : "RemoveUserReqDto.email",
-        "type" : "object"
-      },
-      "SendVarificationEmailReqDto.email" : {
-        "title" : "SendVarificationEmailReqDto.email",
-        "type" : "object"
-      },
-      "LoginReqDto.password" : {
-        "title" : "LoginReqDto.password",
-        "type" : "object"
-      },
-      "api-login-updateUser486549215" : {
-        "type" : "object"
+      "UpdateUserReqDto" : {
+        "title" : "UpdateUserReqDto",
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "Password to change"
+          },
+          "nickname" : {
+            "type" : "string",
+            "description" : "nickname to change"
+          }
+        }
       }
     }
   }
