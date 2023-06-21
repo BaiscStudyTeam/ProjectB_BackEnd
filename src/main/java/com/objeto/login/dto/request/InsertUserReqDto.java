@@ -1,5 +1,6 @@
 package com.objeto.login.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.objeto.login.dto.LoginDto;
 import com.objeto.security.PatternUtils;
 import com.objeto.security.encrypt.EncryptUtils;
@@ -37,6 +38,7 @@ public class InsertUserReqDto {
         this.emailAuthCode = emailAuthCode;
     }
 
+    @JsonIgnore
     public String getUserUUID() {
         return EncryptUtils.randomIdGenerator();
     }

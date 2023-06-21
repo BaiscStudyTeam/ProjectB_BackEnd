@@ -3,6 +3,7 @@ package com.objeto.login.service;
 import com.objeto.jwt.JwtTokenProvider;
 import com.objeto.login.dto.LoginDto;
 import com.objeto.login.dto.request.InsertUserReqDto;
+import com.objeto.login.dto.request.RemoveUserReqDto;
 import com.objeto.login.dto.request.UpdateUserReqDto;
 import com.objeto.login.entity.MyUserDetails;
 import com.objeto.login.entity.User;
@@ -64,4 +65,8 @@ public class LoginService {
         return userRepository.save(afterUser);
     }
 
+    @Transactional
+    public void removeUser(RemoveUserReqDto reqDto) {
+        userRepository.removeByEmail(reqDto.getEmail());
+    }
 }

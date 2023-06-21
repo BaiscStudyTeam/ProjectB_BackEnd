@@ -44,6 +44,7 @@ public class LoginController {
 
     @DeleteMapping("/removeUser")
     public ResponseEntity<String> removeUser(@RequestBody RemoveUserReqDto reqDto) {
+        loginService.removeUser(reqDto);
         return ResponseEntity.ok("your account info removed.");
     }
 

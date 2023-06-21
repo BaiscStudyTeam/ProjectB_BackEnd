@@ -12,4 +12,6 @@ public interface UserRepository extends CrudRepository<User, String> {
     int countByEmail(String email);
 
     int countByNickname(String nickname);
+
+    int removeByEmail(String email);
 }
