@@ -33,6 +33,8 @@ public class SavePostReqDto {
 
     private final LocalDateTime regDt;
 
+    private final String zoneId;
+
     public PostDto toEntity() {
         return PostDto.builder()
                 .postId(EncryptUtils.randomIdGenerator())
