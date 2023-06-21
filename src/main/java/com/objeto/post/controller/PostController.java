@@ -2,8 +2,6 @@ package com.objeto.post.controller;
 
 import com.objeto.post.dto.request.SavePostReqDto;
 import com.objeto.post.entity.Post;
-import com.objeto.post.entity.Thumbnail;
-import com.objeto.post.service.MainPostService;
 import com.objeto.post.service.PostService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
