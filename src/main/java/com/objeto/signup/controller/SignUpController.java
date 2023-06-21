@@ -31,25 +31,13 @@ public class SignUpController {
     }
 
     /**
-     * insert new User's information
+     * insert new User's information, but only for testing. ( varificationEmail must be checked while signUp )
      * @param reqDto
      * @return http requet body OK
      */
     @PostMapping("/sendVarificationEmail")
     public ResponseEntity<String> sendVarificationEmail(@RequestBody SendVarificationEmailReqDto reqDto) {
-        signInService.sendVarificationEmail(reqDto.toEntity());
-        return ResponseEntity.ok("your account has been created. go to address \\home.html");
-    }
-
-    /**
-     * insert new User's information
-     * @param code varification code that stored in redis, expires in 5 minute
-     * @return http requet body OK
-     */
-    @GetMapping("/checkEmailCode/{code}")
-    public ResponseEntity<String> checkEmailCode(@PathVariable String code) {
-        if(signInService.checkEmailCode(code)) return ResponseEntity.ok("your email varified");
-        else return ResponseEntity.ok("your email code is expired or not exist. please send Varification Email Again");
+        return ResponseEntity.ok(signInService.sendVarificationEmail(reqDto.toEntity()));
     }
 
     /**

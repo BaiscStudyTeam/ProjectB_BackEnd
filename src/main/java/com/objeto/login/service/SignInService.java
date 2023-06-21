@@ -37,10 +37,11 @@ public class SignInService {
         return userRepository.save(dto.convert().toEntity());
     }
 
-    public void sendVarificationEmail(SignUpDto reqDto) {
+    public String sendVarificationEmail(SignUpDto reqDto) {
         String code = EncryptUtils.randomIdGenerator();
         this.saveVarificationCodeToRedis(code, reqDto.getEmail());
         this.sendVarificaiontEmail(reqDto.getEmail(), code);
+        return code;
     }
 
     private void sendVarificaiontEmail(String email, String code) {
