@@ -27,11 +27,12 @@ public class LoginController {
     @PostMapping("/findUser")
     public String findUser(HttpServletResponse response, @RequestBody FindUserReqDto reqDto) {
 
-        Cookie cookie = new Cookie("cookieName", "cookieValue");
+        String token = loginService.validateLogin(reqDto.convert());
+
+        Cookie cookie = new Cookie("authentication", token);
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
 
-        String token = loginService.validateLogin(reqDto.convert());
         return token;
     }
 
