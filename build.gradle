@@ -1,16 +1,42 @@
+
 plugins {
     id 'org.springframework.boot' version '3.0.0'
     id 'io.spring.dependency-management' version '1.1.0'
+    id 'com.epages.restdocs-api-spec' version '0.17.1'
+    id 'org.hidetake.swagger.generator' version '2.18.2'
+    id 'org.asciidoctor.convert' version '1.5.8'
     id 'java'
 }
-
 
 repositories {
     mavenCentral()
 }
+
+// Swagger resource path and name
+swaggerSources {
+    Sample {
+        setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
+    }
+}
+
+openapi3 {
+    setServer("http://3.36.99.194:8080")
+    title = "restdocs-swagger API Documentation"
+    description = "Spring REST Docs with SwaggerUI."
+    version = "0.0.1"
+    format = "yaml"
+}
+
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.epages.restdocs-api-spec'
+apply plugin: 'org.hidetake.swagger.generator'
+apply plugin: 'org.asciidoctor.convert'
+
+ext {
+    set('snippetsDir', file("build/generated-snippets"))
+}
 
 dependencies {
     //logging
@@ -20,6 +46,7 @@ dependencies {
 
     // Annotation Build를 위한 플러그인
     implementation 'org.projectlombok:lombok:1.18.26'
+    implementation 'junit:junit:4.13.1'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
 
     // Spring 종속적인 플러그인
@@ -28,14 +55,58 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.1.0'
     implementation "org.springframework.boot:spring-boot-starter-security"
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    //  - 테스트 플러그인
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     //DB Driver
     implementation 'mysql:mysql-connector-java:8.0.28'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
 
+    // InMemory Database
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
     //JWT Security
-    implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    implementation 'javax.xml.bind:jaxb-api:2.1'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+
+    //Mail Implementation
+    implementation 'org.springframework.boot:spring-boot-starter-mail:3.1.0'
+    runtimeOnly "com.sun.activation:jakarta.activation:2.0.1"
+
+    //  - 테스트 플러그인
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-restassured' //OpenApi3 Document Plugin
+    testImplementation 'io.rest-assured:rest-assured'                             //OpenApi3 Document Plugin
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'     //OpenApi3 Document Plugin
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.17.1'              //OpenApi3 Document Plugin
+    swaggerUI 'org.webjars:swagger-ui:4.11.1'                                     //OpenApi3 Document Plugin
 }
+
+// cofiguration for jakarta.acitvation version crash
+configurations.all {
+    resolutionStrategy {
+        exclude group: "com.sun.activation", module: "jakarta.activation"
+    }
+}
+
+test {
+    outputs.dir snippetsDir
+    exclude 'com.example.objeto' // skip Test
+    useJUnitPlatform()
+}
+asciidoctor {
+    inputs.dir snippetsDir
+    dependsOn test
+}
+tasks.register('copySwaggerUI', Copy) {
+    dependsOn 'openapi3'
+
+    def generateSwaggerUISampleTask = tasks.named('generateSwaggerUISample', GenerateSwaggerUI).get()
+
+    from("${generateSwaggerUISampleTask.outputDir}")
+    into("${project.buildDir}/resources/main/static/docs")
+}
+
+
+
+

@@ -9,6 +9,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +22,7 @@ import java.util.Date;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
-    private String secretKey = "llshlllshlllshlllshl";
+    private String secretKey = "llshlllshlllshlllshldsfsdfsdfsdfsdfsdfsdfsdfsdffsdffdsdfsdfdfsdfs";
 
     // 토큰 유효시간 30분
     private long tokenValidTime = 30 * 60 * 1000L;
@@ -34,10 +35,9 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰 생성
-    public String createToken(String email, String nickName) {
-        Claims claims = Jwts.claims().setSubject(email); // JWT payload 에 저장되는 정보단위
-        claims.put("userPk", email); // 정보는 key / value 쌍으로 저장된다.
-        claims.put("nickName", nickName);
+    public String createToken(String userId) {
+        Claims claims = Jwts.claims().setSubject(userId); // JWT payload 에 저장되는 정보단위
+        claims.put("userId", userId); // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
@@ -69,7 +69,7 @@ public class JwtTokenProvider {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
-            return false;
+            throw new BadCredentialsException("JwtAuthToken validation Failed : Token Expired");
         }
     }
 }

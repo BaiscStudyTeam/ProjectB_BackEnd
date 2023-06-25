@@ -1,12 +1,12 @@
 server :
-  port : 8080
+  port: 8080
 
 spring :
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:mysql://dev.c3andky0bnjd.ap-northeast-2.rds.amazonaws.com:3306/dev_schema?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
-    username: admin
-    password: admin1234!
+    url: jdbc:p6spy:mysql://ec2-15-164-196-118.ap-northeast-2.compute.amazonaws.com:3306/objeto?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    username: USER_NAME
+    password: USER_PASSWORD
   jpa:
     database : mysql
     show-sql : false
@@ -16,7 +16,12 @@ spring :
       hibernate:
         show_sql: false
         format_sql: false
-
+  data:
+    redis:
+      port: 6379
+      host: localhost
+  jackson:
+    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat  # yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
 decorator:
   datasource:
     p6spy:
@@ -27,14 +32,35 @@ logging:
     root : info
     p6spy: trace
 
-sentry:
-  dsn: "https://aca63734d7b844709390e4b636d2a967@o4505215665897472.ingest.sentry.io/4505215667011584"
-  # Set traces-sample-rate to 1.0 to capture 100% of transactions for performance monitoring.
-  # We recommend adjusting this value in production.
-  traces-sample-rate: 1.0
-  enable-tracing : true
-  debug: false
-
 jwt:
   secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
 
+---
+spring :
+  config :
+    activate:
+      on-profile: oracle
+    import:
+      - classpath:/config/oracle-config.yml
+---
+spring :
+  config :
+    activate:
+      on-profile: mssql
+    import:
+      - classpath:/config/mysql-config.yml
+---
+spring :
+  config :
+    activate:
+      on-profile: mysql
+    import:
+      - classpath:/config/mssql-config.yml
+
+---
+spring :
+  config :
+    activate:
+      on-profile: mysql
+    import:
+      - classpath:/config/deploy-config.yml
