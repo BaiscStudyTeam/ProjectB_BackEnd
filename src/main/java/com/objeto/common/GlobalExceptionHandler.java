@@ -2,6 +2,7 @@ package com.objeto.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,5 +34,10 @@ public class GlobalExceptionHandler {
         ObjectMapper mapper = new ObjectMapper();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mapper.writeValueAsString(list));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<String> handleControllerValidationException(Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }

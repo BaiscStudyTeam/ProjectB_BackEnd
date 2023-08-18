@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class SendVarificationEmailReqDto {
 
     @NotEmpty
-    @Pattern(regexp = PatternUtils.passwordPattern)
+    @Pattern(regexp = PatternUtils.emailPattern)
     private String email;
 
     @Builder
