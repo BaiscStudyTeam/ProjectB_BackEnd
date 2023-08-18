@@ -15,6 +15,7 @@ import lombok.Setter;
 public class UpdateUserReqDto {
 
     @NotEmpty
+    @Pattern(regexp = PatternUtils.nickNamePattern)
     private String nickname;
 
     @NotEmpty

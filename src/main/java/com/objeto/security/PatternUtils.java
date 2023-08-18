@@ -15,7 +15,7 @@ public class PatternUtils {
      * can add english, korean, number, white space
      * 2 to 20 characters in length
      */
-    public static final String nickNamePattern = "\t/^[\\w\\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,20}$/\n";
+    public static final String nickNamePattern = "^[\sa-zA-Z0-9ㄱ-힣]{2,20}$";
 
     /**
      * RegExp Pattern for standard password
