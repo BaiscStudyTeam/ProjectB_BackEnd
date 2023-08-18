@@ -1,6 +1,9 @@
 package com.objeto.login.dto.request;
 
 import com.objeto.login.dto.LoginDto;
+import com.objeto.security.PatternUtils;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +14,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UpdateUserReqDto {
 
+    @NotEmpty
     private String nickname;
 
+    @NotEmpty
+    @Pattern(regexp = PatternUtils.passwordPattern)
     private String password;
 
     @Builder
