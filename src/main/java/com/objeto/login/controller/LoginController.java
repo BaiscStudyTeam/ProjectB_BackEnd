@@ -39,14 +39,14 @@ public class LoginController {
     @PutMapping("/updateUser")
     public ResponseEntity<String> updateUser(@RequestBody UpdateUserReqDto reqDto) {
         loginService.updateUser(reqDto);
-        return ResponseEntity.ok("your account info updated.");
+        return ResponseEntity.ok(null);
     }
 
 
     @DeleteMapping("/removeUser")
     public ResponseEntity<String> removeUser(@RequestBody RemoveUserReqDto reqDto) {
         loginService.removeUser(reqDto);
-        return ResponseEntity.ok("your account info removed.");
+        return ResponseEntity.ok(null);
     }
 
 }
