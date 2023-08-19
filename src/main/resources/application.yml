@@ -22,6 +22,8 @@ spring :
       host: localhost
   jackson:
     date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat  # yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+  profiles:
+    active: deploy
 decorator:
   datasource:
     p6spy:
