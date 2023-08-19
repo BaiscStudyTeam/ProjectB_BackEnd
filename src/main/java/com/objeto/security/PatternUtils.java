@@ -7,15 +7,16 @@ public class PatternUtils {
     }
     /**
      * RegExp Pattern for RFC2822 Email
+     * Limitation of EmailPattern is 255, Databse Limitation.
      */
-    public static final String emailPattern = "/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g";
+    public static final String emailPattern = "^(?=.{0,255}$)[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
 
     /**
      * RegExp Pattern for nickbame that 2~20 size
      * can add english, korean, number, white space
      * 2 to 20 characters in length
      */
-    public static final String nickNamePattern = "\t/^[\\w\\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,20}$/\n";
+    public static final String nickNamePattern = "^[\sa-zA-Z0-9ㄱ-힣]{2,20}$";
 
     /**
      * RegExp Pattern for standard password

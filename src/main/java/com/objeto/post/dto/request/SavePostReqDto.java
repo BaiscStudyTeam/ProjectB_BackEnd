@@ -3,6 +3,7 @@ package com.objeto.post.dto.request;
 import com.objeto.post.dto.PostDto;
 import com.objeto.security.encrypt.EncryptUtils;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,11 @@ import java.time.LocalDateTime;
 public class SavePostReqDto {
 
     @NotEmpty
+    @Size(max = 30)
     private final String userId;
 
     @NotEmpty
+    @Size(max = 100)
     private final String postTitle;
 
     @NotEmpty

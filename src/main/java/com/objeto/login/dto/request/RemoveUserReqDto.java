@@ -3,6 +3,7 @@ package com.objeto.login.dto.request;
 import com.objeto.security.PatternUtils;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

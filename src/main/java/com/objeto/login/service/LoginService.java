@@ -58,8 +58,8 @@ public class LoginService {
         User afterUser = User.builder()
                 .userId(beforeUser.getUserId())
                 .email(beforeUser.getEmail())
-                .password(password)
-                .nickname(nickname)
+                .password(password.trim())
+                .nickname(nickname.trim())
                 .regDt(new Timestamp(System.currentTimeMillis()))
                 .build();
         return userRepository.save(afterUser);
