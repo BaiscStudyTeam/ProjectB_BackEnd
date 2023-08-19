@@ -61,6 +61,6 @@ spring :
 spring :
   config :
     activate:
-      on-profile: mysql
+      on-profile: deploy
     import:
-      - classpath:/config/deploy-config.yml
+      - file:///home/ec2-user/blog/context/deploy-config.yml
