@@ -1,9 +1,5 @@
 server :
   port: 8080
-  tomcat:
-    accesslog:
-      enabled: true
-    basedir: /home/ec2-user/blog
 
 spring :
   datasource:
