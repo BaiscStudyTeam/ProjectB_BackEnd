@@ -6,7 +6,7 @@ window.swaggerSpec={
     "version" : "0.0.1"
   },
   "servers" : [ {
-    "url" : "http://13.124.25.59:8080"
+    "url" : "http://localhost:8080"
   } ],
   "tags" : [ ],
   "paths" : {
@@ -24,7 +24,7 @@ window.swaggerSpec={
               },
               "examples" : {
                 "findUser" : {
-                  "value" : "{\"email\":\"zaxscd95@gmail.com\",\"password\":\"abcd1234!\"}"
+                  "value" : "{\"email\":\"zaxscd95@gmail.com\",\"password\":\"Abcd1234!\"}"
                 }
               }
             }
@@ -34,7 +34,7 @@ window.swaggerSpec={
           "200" : {
             "description" : "200",
             "content" : {
-              "text/plain;charset=UTF-8" : {
+              "application/json;charset=UTF-8" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/api-signUp-findDuplicateEmail486549215"
                 },
@@ -112,7 +112,7 @@ window.swaggerSpec={
               },
               "examples" : {
                 "updateUser" : {
-                  "value" : "{\"nickname\":\"SampleNickname\",\"password\":\"abcd1234!\"}"
+                  "value" : "{\"nickname\":\"SampleNickname\",\"password\":\"Abcd1234!\"}"
                 }
               }
             }

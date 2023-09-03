@@ -50,7 +50,7 @@ public class LoginControllerTest {
 
         FindUserReqDto dto = FindUserReqDto.builder()
                 .email("zaxscd95@gmail.com")
-                .password("abcd1234!")
+                .password("Abcd1234!")
                 .build();
 
         ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.post("/api/login/findUser")
@@ -74,7 +74,7 @@ public class LoginControllerTest {
                      )
                 );
         // Set token for Next updateUser value
-        accessTokenValue = actions.andReturn().getResponse().getContentAsString();
+        accessTokenValue = actions.andReturn().getResponse().getCookie("authentication").getValue();
         System.out.println(actions.andReturn().getResponse().getContentAsString());
 
     }
@@ -84,7 +84,7 @@ public class LoginControllerTest {
     @DisplayName("PUT:api/login/updateUser")
     void modifyUserTest() throws Exception {
 
-        UpdateUserReqDto dto = UpdateUserReqDto.builder().nickname("SampleNickname").password("abcd1234!").build();
+        UpdateUserReqDto dto = UpdateUserReqDto.builder().nickname("SampleNickname").password("Abcd1234!").build();
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/login/updateUser")
                         // Need Jwt Token that findUser method provide
                         .header("X-AUTH-TOKEN", accessTokenValue)

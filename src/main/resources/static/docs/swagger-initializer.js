@@ -6,6 +6,11 @@ window.onload = function() {
     url: "https://petstore.swagger.io/v2/swagger.json",
     dom_id: '#swagger-ui',
     deepLinking: true,
+    requestInterceptor:
+        (request) => {
+          request.credentials = 'include'
+          return request;
+    },
     presets: [
       SwaggerUIBundle.presets.apis,
       SwaggerUIStandalonePreset
