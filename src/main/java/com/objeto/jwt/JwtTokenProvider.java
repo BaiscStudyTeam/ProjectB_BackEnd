@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,9 +59,21 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-    // Request의 Header에서 token 값을 가져옵니다. "X-AUTH-TOKEN" : "TOKEN값'
+    // Request의 Http Only Cookie, 'authentication' cookie에서 Jwt token 값을 가져옵니다.
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-TOKEN");
+        String targetCookieName = "authentication";
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            // Iterate through the array of cookies
+            for (Cookie cookie : cookies) {
+                // Check if the current cookie's name matches the target cookie's name
+                if (cookie.getName().equals(targetCookieName)) {
+                    // Found the target cookie
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 
     // 토큰의 유효성 + 만료일자 확인

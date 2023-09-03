@@ -2,13 +2,15 @@ package com.objeto.login.service;
 
 import com.objeto.jwt.JwtTokenProvider;
 import com.objeto.login.dto.LoginDto;
-import com.objeto.login.dto.request.InsertUserReqDto;
 import com.objeto.login.dto.request.RemoveUserReqDto;
 import com.objeto.login.dto.request.UpdateUserReqDto;
+import com.objeto.login.dto.response.FindUserResDto;
 import com.objeto.login.entity.MyUserDetails;
 import com.objeto.login.entity.User;
 import com.objeto.login.repository.UserRepository;
 import com.objeto.security.encrypt.EncryptUtils;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -29,7 +31,7 @@ public class LoginService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
-    public String validateLogin(LoginDto dto) {
+    public FindUserResDto validateLogin(HttpServletResponse response, LoginDto dto) {
         // check emali duplication
         User member = userRepository.findUserByEmail(dto.getEmail());
         if (Objects.isNull(member)) throw new BadCredentialsException("Jwt Authentication Failed : User not Exist");
@@ -39,8 +41,14 @@ public class LoginService {
         if(!ec.matches(dto.getUserPassword(), member.getPassword())) {
             throw new BadCredentialsException("Jwt Authentication Failed : Password doesn't match");
         }
-        // return jwtToken for login User
-        return jwtTokenProvider.createToken(member.getUserId());
+
+        // set jwtToken for login User
+        Cookie cookie = new Cookie("authentication", jwtTokenProvider.createToken(member.getUserId()));
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+
+        // return user info to responesEntity body
+        return FindUserResDto.builder().email(member.getEmail()).nickname(member.getNickname()).build();
     }
 
     @Transactional

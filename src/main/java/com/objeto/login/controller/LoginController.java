@@ -2,7 +2,9 @@ package com.objeto.login.controller;
 
 import com.objeto.login.dto.request.RemoveUserReqDto;
 import com.objeto.login.dto.request.UpdateUserReqDto;
+import com.objeto.login.dto.response.FindUserResDto;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -26,15 +28,8 @@ public class LoginController {
      * @return jwt Token String value
      */
     @PostMapping("/findUser")
-    public ResponseEntity<String> findUser(HttpServletResponse response, @RequestBody @Valid FindUserReqDto reqDto) {
-
-        String token = loginService.validateLogin(reqDto.convert());
-
-        Cookie cookie = new Cookie("authentication", token);
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
-
-        return ResponseEntity.ok(token);
+    public ResponseEntity<FindUserResDto> findUser(HttpServletRequest request, HttpServletResponse response, @RequestBody @Valid FindUserReqDto reqDto) {
+        return ResponseEntity.ok(loginService.validateLogin(response, reqDto.convert()));
     }
 
     @PutMapping("/updateUser")
