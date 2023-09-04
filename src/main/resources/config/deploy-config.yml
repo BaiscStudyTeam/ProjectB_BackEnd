@@ -20,6 +20,8 @@ spring :
       hibernate:
         show_sql: false
         format_sql: false
+  custom:
+    allow-origin: localhost
 
 sentry:
   dsn: "https://aca63734d7b844709390e4b636d2a967@o4505215665897472.ingest.sentry.io/4505215667011584"
