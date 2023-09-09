@@ -77,4 +77,12 @@ public class LoginService {
     public void removeUser(RemoveUserReqDto reqDto) {
         userRepository.removeByEmail(reqDto.getEmail());
     }
+
+    @Transactional
+    public void logoutUser(HttpServletResponse response) {
+        // remove jwtToken value
+        Cookie cookie = new Cookie("authentication", "");
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+    }
 }

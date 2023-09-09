@@ -45,4 +45,15 @@ public class LoginController {
         return ResponseEntity.ok(null);
     }
 
+    /**
+     * remove authentication cookie and process logout
+     * @return sucess ok
+     */
+    @PostMapping("/logoutUser")
+    public ResponseEntity<String> logoutUser(HttpServletRequest request, HttpServletResponse response) {
+        loginService.logoutUser(response);
+        return ResponseEntity.ok(null);
+    }
+
+
 }
