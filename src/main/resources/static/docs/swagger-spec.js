@@ -6,7 +6,7 @@ window.swaggerSpec={
     "version" : "0.0.1"
   },
   "servers" : [ {
-    "url" : "http://13.124.25.59:8080"
+    "url" : "http://localhost:8080"
   } ],
   "tags" : [ ],
   "paths" : {
@@ -254,6 +254,31 @@ window.swaggerSpec={
                 "examples" : {
                   "findDuplicateNickName" : {
                     "value" : "your account has been created. go to address \\home.html"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/login/logoutUser" : {
+      "post" : {
+        "tags" : [ "mainPost" ],
+        "summary" : "find main Top post list",
+        "description" : "find main Top post list",
+        "operationId" : "findThumbnailList",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/List<Thumbnail>"
+                },
+                "examples" : {
+                  "findThumbnailList" : {
+                    "value" : "[{\"postId\":\"115e4ad9-4c5e-4c38-a87b-9e12b6\",\"userId\":\"5394e39b-a863-427d-8121-1a7e69\",\"title\":\"1234\",\"contentSum\":\"1234....\",\"thumbnailImg\":\"1234\",\"regDt\":\"2023-06-21T07:29:41Z\"},{\"postId\":\"e4fede18-b8b7-4a77-a754-e4bbbb\",\"userId\":\"5394e39b-a863-427d-8121-1a7e69\",\"title\":\"1234\",\"contentSum\":\"1234....\",\"thumbnailImg\":\"1234\",\"regDt\":\"2023-06-21T07:18:02Z\"},{\"postId\":\"31e14765-0a59-48f3-be73-d38a31\",\"userId\":\"5394e39b-a863-427d-8121-1a7e69\",\"title\":\"1234\",\"contentSum\":\"1234....\",\"thumbnailImg\":\"1234\",\"regDt\":\"2023-06-21T07:13:28Z\"}]"
                   }
                 }
               }

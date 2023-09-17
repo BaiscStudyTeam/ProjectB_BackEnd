@@ -82,6 +82,7 @@ public class LoginService {
     public void logoutUser(HttpServletResponse response) {
         // remove jwtToken value
         Cookie cookie = new Cookie("authentication", "");
+        cookie.setMaxAge(0);
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
     }
