@@ -3,7 +3,7 @@ server :
   tomcat:
     accesslog:
       enabled: true
-    basedir: /app
+    basedir: /home/ec2-user/blog
 
 spring :
   datasource:
