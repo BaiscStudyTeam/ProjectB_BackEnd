@@ -3,7 +3,7 @@ server :
   tomcat:
     accesslog:
       enabled: true
-    basedir: /home/ec2-user/blog
+    basedir: /app
 
 spring :
   datasource:
@@ -38,6 +38,6 @@ decorator:
 
 logging:
   file:
-    path: /home/ec2-user/blog/logfile.log
+    path: /app
   pattern:
     file: %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n

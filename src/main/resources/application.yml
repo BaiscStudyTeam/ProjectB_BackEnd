@@ -65,4 +65,4 @@ spring :
     activate:
       on-profile: deploy
     import:
-      - file:///home/ec2-user/blog/context/deploy-config.yml
+      - file:///app/deploy-config.yml
