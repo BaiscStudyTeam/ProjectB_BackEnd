@@ -15,7 +15,7 @@ public class WebMvcConfigTest implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://ec2-15-164-64-63.ap-northeast-2.compute.amazonaws.com", "http://13.124.25.59:8080")
+                .allowedOrigins("http://ec2-15-164-64-63.ap-northeast-2.compute.amazonaws.com", "http://13.124.25.59")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true);
     }
