@@ -6,7 +6,7 @@ window.swaggerSpec={
     "version" : "0.0.1"
   },
   "servers" : [ {
-    "url" : "http://13.124.25.59:8080"
+    "url" : "http://13.124.25.59"
   } ],
   "tags" : [ ],
   "paths" : {
