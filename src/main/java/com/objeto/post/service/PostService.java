@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -30,5 +32,9 @@ public class PostService {
         postContentRepository.save(reqDto.toPostContentEntity());
         // 3 post Thumbnail을 저장해야한다
         thumbnailRepository.save(reqDto.toThumbnailEntity());
+    }
+
+    public List<Post> findPostByBoardId(String boardId) {
+        return postRepository.findPostByBoardId(boardId);
     }
 }

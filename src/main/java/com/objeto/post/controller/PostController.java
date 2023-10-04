@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -27,6 +29,15 @@ public class PostController {
     @GetMapping("/findPostByPostId")
     public ResponseEntity<Post> findPostByPostId(@RequestParam @NotEmpty String postId) {
         return ResponseEntity.ok( postService.findPostByPostId(postId));
+    }
+
+    /**
+     * find post By boardId
+     * @return post Thumbnail
+     */
+    @GetMapping("/findPostByBoardId")
+    public ResponseEntity<List<Post>> findPostByBoardId(@RequestParam @NotEmpty String boardId) {
+        return ResponseEntity.ok(postService.findPostByBoardId(boardId));
     }
 
     /**

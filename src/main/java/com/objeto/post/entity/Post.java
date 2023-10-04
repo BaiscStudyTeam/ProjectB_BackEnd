@@ -46,15 +46,21 @@ public class Post {
     private Timestamp regDt;
 
     /**
+     * board id where post is included
+     */
+    private String boardId;
+
+    /**
      * builder for immutable java Object
      */
     @Builder
-    public Post(String postId, String userId, String postTitle, String postFile, String postType, Timestamp regDt) {
+    public Post(String postId, String userId, String postTitle, String postFile, String postType, String boardId, Timestamp regDt) {
         this.postId = postId;
         this.userId = userId;
         this.postTitle = postTitle;
         this.postFile = postFile;
         this.postType = postType;
+        this.boardId = boardId;
         this.regDt = regDt;
     }
 }
