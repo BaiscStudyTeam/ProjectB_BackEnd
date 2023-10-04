@@ -338,32 +338,28 @@ public class LoginControllerTest {
     @DisplayName("POST:api/board/findBoardListByUserId")
     void findBoardListByUserId() throws Exception {
 
-        try {
-            //make Test Request
-            findBoardListByUserIdDtoTest reqDto = findBoardListByUserIdDtoTest.builder().userId("1234").build();
+        //make Test Request
+        findBoardListByUserIdDtoTest reqDto = findBoardListByUserIdDtoTest.builder().userId("1234").build();
 
 
-            mockMvc.perform(RestDocumentationRequestBuilders.post("/api/board/findBoardListByUserId")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(mapper.writeValueAsString(reqDto))
-                    )
-                    .andExpect(status().isOk())
-                    // Make API Document for result
-                    .andDo(MockMvcRestDocumentationWrapper.document("findBoardListByUserId",
-                            ResourceDocumentation.resource(
-                                    ResourceSnippetParameters.builder()
-                                            .tag("board").description("find User's board List")
-                                            .summary("find User's board List")
-                                            .requestSchema(Schema.schema("findBoardListByUserIdDto"))
-                                            .requestFields(
-                                                    fieldWithPath("userId").description("UserId for post input").type(JsonFieldType.STRING)
-                                            )
-                                            .build()
-                            )
-                    ));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/board/findBoardListByUserId")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(reqDto))
+                )
+                .andExpect(status().isOk())
+                // Make API Document for result
+                .andDo(MockMvcRestDocumentationWrapper.document("findBoardListByUserId",
+                        ResourceDocumentation.resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("board").description("find User's board List")
+                                        .summary("find User's board List")
+                                        .requestSchema(Schema.schema("findBoardListByUserIdDto"))
+                                        .requestFields(
+                                                fieldWithPath("userId").description("UserId for post input").type(JsonFieldType.STRING)
+                                        )
+                                        .build()
+                        )
+                ));
 
 
     }
@@ -385,6 +381,9 @@ public class LoginControllerTest {
                                             .tag("board").description("find User's postList by boardId")
                                             .summary("find User's postList by boardId")
                                             .requestSchema(Schema.schema("List<Post>"))
+                                            .queryParameters(
+                                                    parameterWithName("boardId").description("boardId to find postList")
+                                            )
                                             .responseFields(
                                                     fieldWithPath("[].postId").type(JsonFieldType.STRING).description("post Id").optional(),
                                                     fieldWithPath("[].userId").type(JsonFieldType.STRING).description("post's regist userId").optional(),
@@ -420,6 +419,9 @@ public class LoginControllerTest {
                                             .tag("board").description("find User's post detail by postId")
                                             .summary("find User's post detail by postId")
                                             .requestSchema(Schema.schema("Post"))
+                                            .queryParameters(
+                                                    parameterWithName("postId").description("postId to find post Detail")
+                                            )
                                             .responseFields(
                                                     fieldWithPath("postId").type(JsonFieldType.STRING).description("post Id").optional(),
                                                     fieldWithPath("userId").type(JsonFieldType.STRING).description("post's regist userId").optional(),
@@ -456,6 +458,9 @@ public class LoginControllerTest {
                                             .tag("comment").description("find User's comments by postId")
                                             .summary("find User's comments by postId")
                                             .requestSchema(Schema.schema("Comment"))
+                                            .queryParameters(
+                                                    parameterWithName("postId").description("postId to find commentList")
+                                            )
                                             /*.responseFields(
                                                     fieldWithPath("postId").type(JsonFieldType.STRING).description("post Id").optional(),
                                                     fieldWithPath("userId").type(JsonFieldType.STRING).description("post's regist userId").optional(),
@@ -465,6 +470,32 @@ public class LoginControllerTest {
                                                     fieldWithPath("regDt").type(JsonFieldType.STRING).description("post registered date").optional(),
                                                     fieldWithPath("boardId").type(JsonFieldType.STRING).description("post's board id").optional()
                                             )*/
+                                            .build()
+                            )
+                    ));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+    @Order(14)
+    @Test
+    @DisplayName("POST:api/login/logoutUser")
+    void logoutUser() throws Exception {
+
+        try {
+            String postId = "1234";
+            mockMvc.perform(RestDocumentationRequestBuilders.post("/api/login/logoutUser"))
+                    .andExpect(status().isOk())
+                    // Make API Document for result
+                    .andDo(MockMvcRestDocumentationWrapper.document("logoutUser",
+                            ResourceDocumentation.resource(
+                                    ResourceSnippetParameters.builder()
+                                            .tag("login").description("logout user")
+                                            .summary("logout user")
                                             .build()
                             )
                     ));
