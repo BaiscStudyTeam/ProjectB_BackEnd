@@ -404,4 +404,75 @@ public class LoginControllerTest {
 
 
     }
+
+    @Order(12)
+    @Test
+    @DisplayName("POST:api/post/findPostByPostId")
+    void findPostByPostId() throws Exception {
+
+        try {
+            String postId = "1234";
+            mockMvc.perform(RestDocumentationRequestBuilders.get("/api/post/findPostByPostId?postId=" + postId))
+                    .andExpect(status().isOk())
+                    // Make API Document for result
+                    .andDo(MockMvcRestDocumentationWrapper.document("findPostByPostId",
+                            ResourceDocumentation.resource(
+                                    ResourceSnippetParameters.builder()
+                                            .tag("board").description("find User's post detail by postId")
+                                            .summary("find User's post detail by postId")
+                                            .requestSchema(Schema.schema("Post"))
+                                            .responseFields(
+                                                    fieldWithPath("postId").type(JsonFieldType.STRING).description("post Id").optional(),
+                                                    fieldWithPath("userId").type(JsonFieldType.STRING).description("post's regist userId").optional(),
+                                                    fieldWithPath("postTitle").type(JsonFieldType.STRING).description("post title").optional(),
+                                                    fieldWithPath("postFile").type(JsonFieldType.STRING).description("post content Summary").optional(),
+                                                    fieldWithPath("postType").type(JsonFieldType.STRING).description("post thumbnail uri").optional(),
+                                                    fieldWithPath("regDt").type(JsonFieldType.STRING).description("post registered date").optional(),
+                                                    fieldWithPath("boardId").type(JsonFieldType.STRING).description("post's board id").optional()
+                                            )
+                                            .build()
+                            )
+                    ));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+    @Order(13)
+    @Test
+    @DisplayName("POST:api/post/findCommentByPostId")
+    void findCommentByPostId() throws Exception {
+
+        try {
+            String postId = "1234";
+            mockMvc.perform(RestDocumentationRequestBuilders.get("/api/post/findCommentByPostId?postId=" + postId))
+                    .andExpect(status().isOk())
+                    // Make API Document for result
+                    .andDo(MockMvcRestDocumentationWrapper.document("findCommentByPostId",
+                            ResourceDocumentation.resource(
+                                    ResourceSnippetParameters.builder()
+                                            .tag("comment").description("find User's comments by postId")
+                                            .summary("find User's comments by postId")
+                                            .requestSchema(Schema.schema("Comment"))
+                                            /*.responseFields(
+                                                    fieldWithPath("postId").type(JsonFieldType.STRING).description("post Id").optional(),
+                                                    fieldWithPath("userId").type(JsonFieldType.STRING).description("post's regist userId").optional(),
+                                                    fieldWithPath("postTitle").type(JsonFieldType.STRING).description("post title").optional(),
+                                                    fieldWithPath("postFile").type(JsonFieldType.STRING).description("post content Summary").optional(),
+                                                    fieldWithPath("postType").type(JsonFieldType.STRING).description("post thumbnail uri").optional(),
+                                                    fieldWithPath("regDt").type(JsonFieldType.STRING).description("post registered date").optional(),
+                                                    fieldWithPath("boardId").type(JsonFieldType.STRING).description("post's board id").optional()
+                                            )*/
+                                            .build()
+                            )
+                    ));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
 }
