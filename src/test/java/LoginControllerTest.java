@@ -1,6 +1,7 @@
 import com.epages.restdocs.apispec.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.objeto.SpringBootApplicationMain;
+import com.objeto.board.dto.request.findBoardListByUserIdDtoTest;
 import com.objeto.login.dto.request.FindUserReqDto;
 import com.objeto.login.dto.request.InsertUserReqDto;
 import com.objeto.login.dto.request.RemoveUserReqDto;
@@ -329,6 +330,42 @@ public class LoginControllerTest {
                                         .build()
                         )
                 ));
+
+    }
+
+
+    @Order(10)
+    @Test
+    @DisplayName("POST:api/board/findBoardListByUserId")
+    void findBoardListByUserId() throws Exception {
+
+        try {
+            //make Test Request
+            findBoardListByUserIdDtoTest reqDto = findBoardListByUserIdDtoTest.builder().userId("1234").build();
+
+
+            mockMvc.perform(RestDocumentationRequestBuilders.post("/api/board/findBoardListByUserId")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(mapper.writeValueAsString(reqDto))
+                    )
+                    .andExpect(status().isOk())
+                    // Make API Document for result
+                    .andDo(MockMvcRestDocumentationWrapper.document("findBoardListByUserId",
+                            ResourceDocumentation.resource(
+                                    ResourceSnippetParameters.builder()
+                                            .tag("board").description("find User's board List")
+                                            .summary("find User's board List")
+                                            .requestSchema(Schema.schema("findBoardListByUserIdDto"))
+                                            .requestFields(
+                                                    fieldWithPath("userId").description("UserId for post input").type(JsonFieldType.STRING)
+                                            )
+                                            .build()
+                            )
+                    ));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 }
