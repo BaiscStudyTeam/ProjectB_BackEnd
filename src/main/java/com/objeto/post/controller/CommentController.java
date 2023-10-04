@@ -1,7 +1,6 @@
 package com.objeto.post.controller;
 
 import com.objeto.post.dto.request.DeleteCommentReqDto;
-import com.objeto.post.dto.request.FindPostByPostIsdReqDto;
 import com.objeto.post.dto.request.SaveCommentReqDto;
 import com.objeto.post.dto.request.UpdateByCommentIdReqDto;
 import com.objeto.post.entity.Comment;
@@ -12,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -21,9 +22,14 @@ public class CommentController {
     private final CommentService commentService;
 
 
-    @GetMapping("/findByPostId")
-    public ResponseEntity<Comment> findPostByPostId(@RequestParam @Valid FindPostByPostIsdReqDto reqDto) {
-        return ResponseEntity.ok(commentService.findPostByPostId(reqDto.getPostId()));
+    /**
+     * find comment by post Id
+     * @param postId postId to find CommentList
+     * @return comment list
+     */
+    @GetMapping("/findCommentByPostId")
+    public ResponseEntity<List<Comment>> findPostByPostId(@RequestParam @Valid String postId) {
+        return ResponseEntity.ok(commentService.findCommentByPostId(postId));
     }
 
     @PostMapping("/update")
