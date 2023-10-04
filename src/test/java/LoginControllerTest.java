@@ -8,6 +8,7 @@ import com.objeto.login.dto.request.RemoveUserReqDto;
 import com.objeto.login.dto.request.UpdateUserReqDto;
 import com.objeto.post.dto.request.SavePostReqDtoTest;
 import com.objeto.signup.dto.request.SendVarificationEmailReqDto;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -23,6 +24,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -76,7 +78,6 @@ public class LoginControllerTest {
                 );
         // Set token for Next updateUser value
         accessTokenValue = actions.andReturn().getResponse().getCookie("authentication").getValue();
-        System.out.println(actions.andReturn().getResponse().getContentAsString());
 
     }
 
@@ -85,12 +86,12 @@ public class LoginControllerTest {
     @DisplayName("PUT:api/login/updateUser")
     void modifyUserTest() throws Exception {
 
-        UpdateUserReqDto dto = UpdateUserReqDto.builder().nickname("SampleNickname").password("Abcd1234!").build();
+        UpdateUserReqDto dto2 = UpdateUserReqDto.builder().nickname("SampleNickname").password("Abcd1234!").build();
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/login/updateUser")
                         // Need Jwt Token that findUser method provide
-                        .header("X-AUTH-TOKEN", accessTokenValue)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(dto))
+                        .cookie(new Cookie("authentication", accessTokenValue))
+                        .content(mapper.writeValueAsString(dto2))
                 )
                 .andExpect(status().isOk())
                 // Make API Document for result
@@ -100,9 +101,6 @@ public class LoginControllerTest {
                                         .tag("login").summary("update User")
                                         .description("update User Information with nickname and Password")
                                         .requestSchema(Schema.schema("UpdateUserReqDto"))
-                                        .requestHeaders(
-                                                new HeaderDescriptorWithType("X-AUTH-TOKEN").description("accessToken header for login User").type(SimpleType.STRING)
-                                        )
                                         .requestFields(
                                                 fieldWithPath("nickname").description("nickname to change").type(JsonFieldType.STRING),
                                                 fieldWithPath("password").description("Password to change").type(JsonFieldType.STRING)
@@ -200,7 +198,8 @@ public class LoginControllerTest {
     @DisplayName("GET:api/signUp/findDuplicateNickName")
     void findDuplicateNickName() throws Exception {
         //make Test Request
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/signUp/findDuplicateNickName?nickname=" + "abcd" + Math.random()))
+        Random random = new Random();
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/signUp/findDuplicateNickName?nickname=" + "abcde" + random.nextInt(1000)))
                 .andExpect(status().isOk())
                 // Make API Document for result
                 .andDo(MockMvcRestDocumentationWrapper.document("findDuplicateNickName",
@@ -443,12 +442,12 @@ public class LoginControllerTest {
 
     @Order(13)
     @Test
-    @DisplayName("POST:api/post/findCommentByPostId")
+    @DisplayName("POST:api/comment/findCommentByPostId")
     void findCommentByPostId() throws Exception {
 
         try {
             String postId = "1234";
-            mockMvc.perform(RestDocumentationRequestBuilders.get("/api/post/findCommentByPostId?postId=" + postId))
+            mockMvc.perform(RestDocumentationRequestBuilders.get("/api/comment/findCommentByPostId?postId=" + postId))
                     .andExpect(status().isOk())
                     // Make API Document for result
                     .andDo(MockMvcRestDocumentationWrapper.document("findCommentByPostId",
