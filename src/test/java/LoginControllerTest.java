@@ -368,4 +368,40 @@ public class LoginControllerTest {
 
 
     }
+
+    @Order(11)
+    @Test
+    @DisplayName("POST:api/post/findPostByBoardId")
+    void findPostByBoardId() throws Exception {
+
+        try {
+            String boardId = "default";
+            mockMvc.perform(RestDocumentationRequestBuilders.get("/api/post/findPostByBoardId?boardId=" + boardId)
+                    )
+                    .andExpect(status().isOk())
+                    // Make API Document for result
+                    .andDo(MockMvcRestDocumentationWrapper.document("findPostByBoardId",
+                            ResourceDocumentation.resource(
+                                    ResourceSnippetParameters.builder()
+                                            .tag("board").description("find User's postList by boardId")
+                                            .summary("find User's postList by boardId")
+                                            .requestSchema(Schema.schema("List<Post>"))
+                                            .responseFields(
+                                                    fieldWithPath("[].postId").type(JsonFieldType.STRING).description("post Id").optional(),
+                                                    fieldWithPath("[].userId").type(JsonFieldType.STRING).description("post's regist userId").optional(),
+                                                    fieldWithPath("[].postTitle").type(JsonFieldType.STRING).description("post title").optional(),
+                                                    fieldWithPath("[].postFile").type(JsonFieldType.STRING).description("post content Summary").optional(),
+                                                    fieldWithPath("[].postType").type(JsonFieldType.STRING).description("post thumbnail uri").optional(),
+                                                    fieldWithPath("[].regDt").type(JsonFieldType.STRING).description("post registered date").optional(),
+                                                    fieldWithPath("[].boardId").type(JsonFieldType.STRING).description("post's board id").optional()
+                                            )
+                                            .build()
+                            )
+                    ));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
 }
