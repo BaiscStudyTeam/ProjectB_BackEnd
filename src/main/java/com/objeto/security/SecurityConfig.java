@@ -19,8 +19,12 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().disable().formLogin().disable().csrf().disable(); // Spring Security LoginPage disable
         http.httpBasic().disable(); // rest api 만을 고려하여 기본 설정 해제
+        http.cors().disable().csrf().disable(); // Spring Security LoginPage disable
+        http.authorizeHttpRequests(authorizeRequests ->
+                authorizeRequests.anyRequest().permitAll()
+        );
+
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 토큰 기반 인증이므로 세션 사용 안함
         http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); // 필터 적용
         return http.build();

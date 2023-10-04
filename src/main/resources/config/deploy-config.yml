@@ -6,6 +6,12 @@ server :
     basedir: /home/ec2-user/blog
 
 spring :
+  boot:
+    admin:
+      client:
+        url: http://localhost:8080
+        instance:
+          service-url: http://localhost:8080
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
     url: jdbc:p6spy:mysql://ec2-15-164-196-118.ap-northeast-2.compute.amazonaws.com:3306/objeto?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
