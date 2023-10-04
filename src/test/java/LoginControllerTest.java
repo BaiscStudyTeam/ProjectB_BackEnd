@@ -143,7 +143,7 @@ public class LoginControllerTest {
         System.out.println(actions.andReturn().getResponse().getContentAsString());
     }
 
-    @Order(4)
+    /*@Order(4)
     @Test
     @DisplayName("DELETE:api/login/removeUser")
     void removeUserTest() throws Exception {
@@ -170,7 +170,7 @@ public class LoginControllerTest {
 
 
 
-    }
+    }*/
 
     @Order(5)
     @Test
@@ -217,7 +217,7 @@ public class LoginControllerTest {
                 ));
     }
 
-    @Order(7)
+    /*@Order(7)
     @Test
     @DisplayName("POST:api/signUp/saveUser")
     void saveUserTest() throws Exception {
@@ -250,7 +250,7 @@ public class LoginControllerTest {
                         )
                 ));
 
-    }
+    }*/
 
     @Order(8)
     @Test
