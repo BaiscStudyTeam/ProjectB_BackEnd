@@ -27,12 +27,14 @@ public class PostDto {
 
     private String thumbnailImg;
 
+    private String boardId;
+
     public Timestamp getRegDt() {
         return new Timestamp(System.currentTimeMillis());
     }
 
     @Builder
-    public PostDto(String postId, String userId, String postTitle, String postType, String postFile, String content, String contentSum, String thumbnailImg) {
+    public PostDto(String postId, String userId, String postTitle, String postType, String postFile, String content, String contentSum, String thumbnailImg, String boardId) {
         this.postId = postId;
         this.userId = userId;
         this.postTitle = postTitle;
@@ -41,6 +43,7 @@ public class PostDto {
         this.content = content;
         this.contentSum = contentSum;
         this.thumbnailImg = thumbnailImg;
+        this.boardId = boardId;
     }
 
 
@@ -51,6 +54,7 @@ public class PostDto {
                 .postFile(this.postFile)
                 .postTitle(this.postTitle)
                 .postType(this.postType)
+                .boardId("default")
                 .regDt(this.getRegDt())
                 .build();
     }

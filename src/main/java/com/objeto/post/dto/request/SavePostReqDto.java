@@ -38,6 +38,8 @@ public class SavePostReqDto {
 
     private final String zoneId;
 
+    private final String boardId;
+
     public PostDto toEntity() {
         return PostDto.builder()
                 .postId(EncryptUtils.randomIdGenerator())
@@ -48,6 +50,7 @@ public class SavePostReqDto {
                 .content(this.content)
                 .contentSum(this.contentSum)
                 .thumbnailImg(this.thumbnailImg)
+                .boardId(boardId)
                 .build();
     }
 
